@@ -8,42 +8,48 @@ datasource db {
 }
 
 model Products {
-  id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(255)
-  description         String?               @db.Text
-  price               String
-  warehouseId         Int
-  warehouse           Warehouses            @relation(fields: [warehouseId], references: [id])
-  stock               Int
-  image               String?               @db.Text
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  category            Categories?           @relation("ProductCategory")
-  transactionsDetails TransactionsDetails[]
+  id                Int                   @id @default(autoincrement())
+  name              String                @db.VarChar(255)
+  description       String?               @db.Text
+  price             Float
+  stock             Int
+  warehouseId       Int                   @unique
+  image             String?               @db.Text
+  createdAt         DateTime              @default(now())
+  category          Categories?           @relation("ProductCategory", fields: [categoryId], references: [id])
+  categoryId        Int                   @unique
+  warehouse         Warehouses            @relation(fields: [warehouseId], references: [id])
+  transactionDetail TransactionsDetails[]
+  deletedAt         DateTime?
 }
 
 model Categories {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(255)
-  productId Int      @unique
-  products  Products @relation("ProductCategory", fields: [productId], references: [id])
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  product   Products? @relation("ProductCategory")
+  deletedAt DateTime?
 }
 
 model Transactions {
   id                  Int                   @id @default(autoincrement())
-  transactionType     String
   transactionsDetails TransactionsDetails[]
+}
+
+enum type {
+  IN
+  OUT
 }
 
 model TransactionsDetails {
   id             Int          @id @default(autoincrement())
-  transaction_id Int
-  product_id     Int
-  amount         Int
-  productsId     Int
+  transactionId  Int
+  productId      Int          @unique
+  type           type
+  quantity       Int
   transactionsId Int
-  Products       Products     @relation(fields: [productsId], references: [id])
+  Products       Products     @relation(fields: [productId], references: [id])
   Transactions   Transactions @relation(fields: [transactionsId], references: [id])
+  createdAt      DateTime     @default(now())
 }
 
 model Warehouses {
@@ -52,6 +58,6 @@ model Warehouses {
   address   String     @db.Text
   phone     String     @db.VarChar(15)
   createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
   Products  Products[]
+  deletedAt DateTime?
 }
