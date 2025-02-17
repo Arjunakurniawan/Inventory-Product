@@ -15,11 +15,11 @@ export type category = {
 export type warehouse = {
   name: string;
   address: string;
-  phone: number;
+  phone: string;
 };
 
 export type transaction = {
-  type: "IN" | "OUT";
+  type: string;
   productId: number;
   quantity: number;
 };
