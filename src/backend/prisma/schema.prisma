@@ -43,6 +43,8 @@ enum TransactionType {
   OUTCOMING
 }
 
+
+
 model TransactionItem {
   transactionId Int
   productId     Int

@@ -1,5 +1,6 @@
+import Sidebar from "./layout/navbar";
 const App = () => {
-  return <div className="bg-slate-800 text-white">App</div>;
+  return <Sidebar />;
 };
 
 export default App;

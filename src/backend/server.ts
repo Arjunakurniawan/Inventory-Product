@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import { Category, PrismaClient, Warehouse } from "@prisma/client";
+import { PrismaClient, Category, Warehouse } from "@prisma/client";
 
 import {
   ProductRequest,

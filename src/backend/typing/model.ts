@@ -69,11 +69,13 @@ export type WarehouseRequest = {
 
 export type TransactionRequest = {
   type: TransactionType;
-  items: {
-    productId: number;
-    quantity: number;
-    price: number;
-  }[];
+  items: [
+    {
+      productId: number;
+      quantity: number;
+      price: number;
+    }
+  ];
 };
 
 //response JSON
