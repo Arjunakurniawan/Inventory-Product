@@ -12,13 +12,17 @@
   },
   "dependencies": {
     "@chakra-ui/color-mode": "^2.2.0",
+    "@chakra-ui/number-input": "^2.1.2",
     "@chakra-ui/react": "^3.8.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/montserrat": "^5.2.5",
     "@fontsource/poppins": "^5.2.5",
-    "@prisma/client": "^6.3.1",
+    "@prisma/client": "^6.5.0",
+    "@types/cors": "^2.8.17",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.8.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "esbuild": "^0.25.0",
     "framer-motion": "^12.4.7",
@@ -27,7 +31,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icon": "^1.0.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

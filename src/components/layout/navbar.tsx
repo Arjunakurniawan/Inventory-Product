@@ -1,8 +1,8 @@
+import { Link as RouterLink } from "react-router-dom";
 import {
   Flex,
   Text,
   Box,
-  Link,
   Avatar,
   Float,
   Circle,
@@ -13,8 +13,10 @@ import {
   MenuTrigger,
   Heading,
 } from "@chakra-ui/react";
-import { useColorMode, useColorModeValue } from "../components/ui/color-mode";
+import { useColorMode, useColorModeValue } from "../ui/color-mode";
 import { LuMoon, LuSun } from "react-icons/lu";
+import iconAvatar from "../img/sugengIcon.jpg";
+import { ChakraRouterLink } from "../ui/chakraRouterLink";
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
@@ -29,13 +31,27 @@ export default function Navbar() {
           fontWeight={"600"}
           bg={useColorModeValue("gray.100", "gray.900")}
         >
-          <Text>Inventory Management</Text>
+          <Text pointerEvents={"none"}>Inventory Management</Text>
           <Flex gap={"3rem"} bg={useColorModeValue("gray.100", "gray.900")}>
-            <Link href="#">Home</Link>
-            <Link href="#">Products</Link>
-            <Link href="#">Categories</Link>
-            <Link href="#">Warehouse</Link>
-            <Link href="#">Transactions</Link>
+            <ChakraRouterLink as={RouterLink} to="/" outline={"none"}>
+              Home
+            </ChakraRouterLink>
+            <ChakraRouterLink as={RouterLink} to="/product" outline={"none"}>
+              Products
+            </ChakraRouterLink>
+            <ChakraRouterLink as={RouterLink} to="/category" outline={"none"}>
+              Categories
+            </ChakraRouterLink>
+            <ChakraRouterLink as={RouterLink} to="/warehouse" outline={"none"}>
+              Warehouse
+            </ChakraRouterLink>
+            <ChakraRouterLink
+              as={RouterLink}
+              to="/transactions"
+              outline={"none"}
+            >
+              Transactions
+            </ChakraRouterLink>
           </Flex>
           <Flex gap={"2rem"} alignItems={"center"}>
             <IconButton
@@ -54,7 +70,7 @@ export default function Navbar() {
               <MenuTrigger>
                 <Avatar.Root outline={"black"} size={"xl"} cursor={"pointer"}>
                   <Avatar.Fallback name="Sugeng Tumbler" />
-                  <Avatar.Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYsHPGUxI0LerPvdxWjKvHESdJmla2hlKRYg&s" />
+                  <Avatar.Image src={iconAvatar} />
                   <Float placement="bottom-end" offsetX="1" offsetY="1">
                     <Circle
                       bg="green.500"

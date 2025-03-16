@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { PrismaClient, Category, Warehouse } from "@prisma/client";
-
+import * as cors from "cors";
 import {
   ProductRequest,
   Product,
@@ -16,8 +16,15 @@ import {
 const app = express();
 const prisma = new PrismaClient();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json());
 dotenv.config();
+
+app.use()
 
 // CRUD product
 app.get<string, null, ApiResponse<Product[]>>("/product", async (_, res) => {
@@ -123,6 +130,7 @@ app.delete<string, { id: string }, ApiResponse<null>>(
 // end product
 
 // CRUD category
+
 app.get<string, null, ApiResponse<Category[]>>("/category", async (_, res) => {
   try {
     const categories =
