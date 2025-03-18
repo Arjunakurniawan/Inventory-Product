@@ -1,11 +1,12 @@
 import { Flex, Table, Button, Text } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Pagination } from "../ui/paginationCustom";
+import { Pagination } from "../../components/ui/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { ChakraRouterLink } from "../ui/chakraRouterLink";
+import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
+import Navbar from "../../components/commons/navbar";
 
-export default function tableProduct() {
+export default function ProductListScreen() {
   const dataProduct = [
     {
       id: 1,
@@ -43,6 +44,7 @@ export default function tableProduct() {
 
   return (
     <>
+      <Navbar />
       <Flex
         justifyContent={"space-between"}
         alignContent={"center"}

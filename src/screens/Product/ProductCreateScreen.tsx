@@ -1,19 +1,28 @@
 import {
-  Button,
+  //   Button,
   Field,
-  Fieldset, 
+  Fieldset,
   Flex,
-  For,
+  //   For,
   Input,
-  NativeSelect,
+  //   NativeSelect,
   NumberInput,
   Stack,
 } from "@chakra-ui/react";
+import Navbar from "../../components/commons/navbar";
 
-export default function formAddProduct() {
+export default function ProductCreateScreen() {
   return (
     <>
-      <Fieldset.Root maxW={"165vh"} maxH={"breakpoint-lg"} size={"lg"} margin={"5rem"} outline={"1px solid #fff"} p={"5rem"}>
+      <Navbar />
+      <Fieldset.Root
+        maxW={"165vh"}
+        maxH={"breakpoint-lg"}
+        size={"lg"}
+        margin={"5rem"}
+        outline={"1px solid #fff"}
+        p={"5rem"}
+      >
         <Stack>
           <Fieldset.Legend>Form Add New Product</Fieldset.Legend>
           <Fieldset.HelperText>

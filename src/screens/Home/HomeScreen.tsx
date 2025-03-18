@@ -1,10 +1,11 @@
 import { Flex, Table, Button, Text, Input } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Pagination } from "../ui/paginationCustom";
-import { InputGroup } from "../ui/input-group";
+import { Pagination } from "../../components/ui/paginationCustom";
+import { InputGroup } from "../../components/ui/input-group";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import Navbar from "../../components/commons/navbar";
 
-export default function tableAll() {
+export default function HomeScreen() {
   const items = [
     {
       id: 1,
@@ -50,6 +51,7 @@ export default function tableAll() {
 
   return (
     <>
+      <Navbar />
       <Flex
         justifyContent={"space-between"}
         alignContent={"center"}

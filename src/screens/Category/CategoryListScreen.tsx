@@ -11,39 +11,35 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Pagination } from "../ui/paginationCustom";
+import { Pagination } from "../../components/ui/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GetCategory } from "../../services/CategoryService";
+import { Category } from "../../../../Backend-side/typing/model";
+import Navbar from "../../components/commons/navbar";
 
-export default function TableCategory() {
+export default function CategoryListScreen() {
   const MotionDiv = motion.div;
-  const dataCategory = [
-    {
-      id: 1,
-      name: "Electronics",
-    },
-    {
-      id: 2,
-      name: "Furniture",
-    },
-  ];
+
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategory = async () => {
       try {
-        const data = await GetCategory();
-        console.log("data berhasil di ambil", data);
+        const response = await GetCategory();
+        setCategories(response.data);
+        console.log("data berhasil di ambil", response);
       } catch (error) {
         console.error("Error ambil data", error);
       }
     };
-    fetchData();
+    fetchCategory();
   }, []);
 
   return (
     <>
+      <Navbar />
       <Flex
         justifyContent={"space-between"}
         alignContent={"center"}
@@ -112,10 +108,12 @@ export default function TableCategory() {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {dataCategory.map((product, index) => (
-              <Table.Row key={product.id}>
-                <Table.Cell textAlign={"center"}>{index + 1}</Table.Cell>
-                <Table.Cell textAlign={"center"}>{product.name}</Table.Cell>
+            {categories.map((category, index) => (
+              <Table.Row>
+                <Table.Cell textAlign={"center"} key={category.id}>
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign={"center"}>{category.name}</Table.Cell>
 
                 <Table.Cell
                   display={"flex"}

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "../ui/color-mode";
 import { LuMoon, LuSun } from "react-icons/lu";
-import iconAvatar from "../img/sugengIcon.jpg";
+import iconAvatar from "../../assets/images/sugengIcon.jpg";
 import { ChakraRouterLink } from "../ui/chakraRouterLink";
 
 export default function Navbar() {
