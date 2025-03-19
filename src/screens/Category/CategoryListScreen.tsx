@@ -114,7 +114,6 @@ export default function CategoryListScreen() {
                   {index + 1}
                 </Table.Cell>
                 <Table.Cell textAlign={"center"}>{category.name}</Table.Cell>
-
                 <Table.Cell
                   display={"flex"}
                   gap={"1rem"}
