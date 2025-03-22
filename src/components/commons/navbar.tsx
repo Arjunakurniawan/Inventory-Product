@@ -36,7 +36,7 @@ export default function Navbar() {
             <ChakraRouterLink as={RouterLink} to="/" outline={"none"}>
               Home
             </ChakraRouterLink>
-            <ChakraRouterLink as={RouterLink} to="/product" outline={"none"}>
+            <ChakraRouterLink as={RouterLink} to="/products" outline={"none"}>
               Products
             </ChakraRouterLink>
             <ChakraRouterLink as={RouterLink} to="/category" outline={"none"}>
