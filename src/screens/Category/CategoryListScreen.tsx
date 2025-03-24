@@ -14,35 +14,68 @@ import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Pagination } from "../../components/ui/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { GetCategory } from "../../services/CategoryService";
+import React, { useEffect, useState } from "react";
+import { CreateCategory, FetchCategory } from "../../services/CategoryService";
 import Navbar from "../../components/commons/navbar";
 import { Category } from "../../services/CategoryService";
-import e from "express";
 
 export default function CategoryListScreen() {
   const MotionDiv = motion.div;
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState("");
+
+  const GetAPICategory = async () => {
+    try {
+      const response = await FetchCategory<Category[]>("/category");
+      setCategories(response);
+    } catch (error) {
+      console.log("Error getting", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchAPICategory = async () => {
-      const response = await GetCategory<Category[]>("/category");
-      setCategories(response);
-    };
-    fetchAPICategory();
+    GetAPICategory();
   }, []);
 
-  const HandleSubmit = (e: React.FormEvent) => {
+  const HandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Call your API here
-    console.log("Form submitted");
+
+    if (inputValue.trim() === "") {
+      setError("This field is required");
+      console.log("errorText", error);
+      return;
+    }
+
+    try {
+      const newCategoryData = await CreateCategory<Category>(
+        "/category/create",
+        {
+          name: inputValue,
+        }
+      );
+
+      if (newCategoryData) {
+        setCategories([...categories, newCategoryData]);
+      }
+
+      setInputValue("");
+      setError("");
+      GetAPICategory();
+      setIsOpen(false);
+      console.log("berhasil di tambahkan", newCategoryData);
+      console.log(inputValue);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       <Navbar />
-      <form>
+      <form onSubmit={HandleSubmit}>
         <Flex
           justifyContent={"space-between"}
           alignContent={"center"}
@@ -56,13 +89,14 @@ export default function CategoryListScreen() {
           >
             Data Category
           </Text>
-          <Dialog.Root>
+          <Dialog.Root open={isOpen}>
             <DialogTrigger>
               <Button
                 colorPalette={"cyan"}
                 variant={"outline"}
                 rounded={"md"}
                 _hover={{}}
+                onClick={() => setIsOpen(true)}
               >
                 <MotionDiv
                   whileHover={{ rotate: 30 }}
@@ -82,15 +116,41 @@ export default function CategoryListScreen() {
                   </Dialog.Header>
                   <Dialog.Body pb="4">
                     <Stack gap="4">
-                      <Field.Root>
+                      <Field.Root invalid>
                         <Field.Label>Name Category</Field.Label>
-                        <Input placeholder="Category" />
+                        <Input
+                          type="text"
+                          placeholder="Add here..."
+                          value={inputValue}
+                          onChange={(e) => {
+                            setInputValue(e.target.value);
+                            setError("");
+                          }}
+                          borderColor={error ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: error ? "red.500" : "blue.500",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {error && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {error}
+                          </Field.ErrorText>
+                        )}
                       </Field.Root>
                     </Stack>
                   </Dialog.Body>
                   <Dialog.Footer>
                     <Dialog.ActionTrigger asChild>
-                      <Button variant="outline">Cancel</Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsOpen(false)}
+                        type="submit"
+                      >
+                        Cancel
+                      </Button>
                     </Dialog.ActionTrigger>
                     <Button onClick={HandleSubmit}>Add</Button>
                   </Dialog.Footer>
@@ -99,49 +159,47 @@ export default function CategoryListScreen() {
             </Portal>
           </Dialog.Root>
         </Flex>
-        <Flex px={"1rem"} mt={"0.5rem"} justifyContent={"center"}>
-          <Table.Root size="lg" interactive w={"85%"}>
-            <Table.Header pointerEvents={"none"}>
-              <Table.Row>
-                <Table.ColumnHeader textAlign={"center"}>no</Table.ColumnHeader>
-                <Table.ColumnHeader textAlign={"center"}>
-                  name
-                </Table.ColumnHeader>
-                <Table.ColumnHeader textAlign={"center"}>
-                  Action
-                </Table.ColumnHeader>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {categories.map((category, index) => (
-                <Table.Row>
-                  <Table.Cell textAlign={"center"} key={category.id}>
-                    {index + 1}
-                  </Table.Cell>
-                  <Table.Cell textAlign={"center"}>{category.name}</Table.Cell>
-                  <Table.Cell
-                    display={"flex"}
-                    gap={"1rem"}
-                    justifyContent={"center"}
-                  >
-                    <Button variant="outline" size="sm" colorPalette={"blue"}>
-                      <FaEdit />
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm" colorPalette={"red"}>
-                      <FaRegTrashAlt />
-                      Delete
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
-        </Flex>
-        <Flex justifyContent={"center"}>
-          <Pagination />
-        </Flex>
       </form>
+      <Flex px={"1rem"} mt={"0.5rem"} justifyContent={"center"}>
+        <Table.Root size="lg" interactive w={"85%"}>
+          <Table.Header pointerEvents={"none"}>
+            <Table.Row>
+              <Table.ColumnHeader textAlign={"center"}>no</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>name</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>
+                Action
+              </Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {categories.map((category, index) => (
+              <Table.Row>
+                <Table.Cell textAlign={"center"} key={category.id}>
+                  {index + 1}
+                </Table.Cell>
+                <Table.Cell textAlign={"center"}>{category.name}</Table.Cell>
+                <Table.Cell
+                  display={"flex"}
+                  gap={"1rem"}
+                  justifyContent={"center"}
+                >
+                  <Button variant="outline" size="sm" colorPalette={"blue"}>
+                    <FaEdit />
+                    Edit
+                  </Button>
+                  <Button variant="outline" size="sm" colorPalette={"red"}>
+                    <FaRegTrashAlt />
+                    Delete
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table.Root>
+      </Flex>
+      <Flex justifyContent={"center"}>
+        <Pagination />
+      </Flex>
     </>
   );
 }
