@@ -15,7 +15,11 @@ import { Pagination } from "../../components/ui/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { CreateCategory, FetchCategory } from "../../services/CategoryService";
+import {
+  CreateCategory,
+  DeleteCategory,
+  FetchCategory,
+} from "../../services/CategoryService";
 import Navbar from "../../components/commons/navbar";
 import { Category } from "../../services/CategoryService";
 
@@ -29,8 +33,8 @@ export default function CategoryListScreen() {
 
   const GetAPICategory = async () => {
     try {
-      const response = await FetchCategory<Category[]>("/category");
-      setCategories(response);
+      const responseGet = await FetchCategory<Category[]>("/category");
+      setCategories(responseGet);
     } catch (error) {
       console.log("Error getting", error);
     }
@@ -50,26 +54,34 @@ export default function CategoryListScreen() {
     }
 
     try {
-      const newCategoryData = await CreateCategory<Category>(
+      const responseNewData = await CreateCategory<Category>(
         "/category/create",
         {
           name: inputValue,
         }
       );
 
-      if (newCategoryData) {
-        setCategories([...categories, newCategoryData]);
+      if (responseNewData) {
+        setCategories([...categories, responseNewData]);
       }
 
       setInputValue("");
       setError("");
       GetAPICategory();
       setIsOpen(false);
-      console.log("berhasil di tambahkan", newCategoryData);
+      console.log("berhasil di tambahkan", responseNewData);
       console.log(inputValue);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const HandleDelete = async (id: number) => {
+    const responseDelete = await DeleteCategory(`/category/${id}`);
+    if (responseDelete) {
+      setCategories(categories.filter((category) => category.id === id));
+    }
+    console.error(responseDelete);
   };
 
   return (
@@ -128,7 +140,7 @@ export default function CategoryListScreen() {
                           }}
                           borderColor={error ? "red.500" : "gray.300"}
                           _focus={{
-                            borderColor: error ? "red.500" : "blue.500",
+                            borderColor: error ? "red.500" : "gray.300",
                             boxShadow: "none",
                           }}
                           rounded="md"
@@ -187,7 +199,12 @@ export default function CategoryListScreen() {
                     <FaEdit />
                     Edit
                   </Button>
-                  <Button variant="outline" size="sm" colorPalette={"red"}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    colorPalette={"red"}
+                    onClick={() => HandleDelete(category.id)}
+                  >
                     <FaRegTrashAlt />
                     Delete
                   </Button>

@@ -34,3 +34,16 @@ export const CreateCategory = async <Category>(
     throw error;
   }
 };
+
+//Delete Api category
+export const DeleteCategory = async <Category>(
+  url: string
+): Promise<Category> => {
+  try {
+    const response = await Api.delete<ApiResponse<Category>>(url);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
