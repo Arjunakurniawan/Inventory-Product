@@ -47,3 +47,17 @@ export const DeleteCategory = async <Category>(
     throw error;
   }
 };
+
+// Update Api category
+export const UpdateCategory = async <Category>(
+  url: string,
+  updatedCategory: { name: string }
+): Promise<Category> => {
+  try {
+    const response = await Api.put<ApiResponse<Category>>(url, updatedCategory);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

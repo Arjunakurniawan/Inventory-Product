@@ -1,7 +1,7 @@
 {
   "name": "todolist",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@chakra-ui/color-mode": "^2.2.0",
+    "@chakra-ui/drawer": "^1.0.0-next.3",
     "@chakra-ui/form-control": "^2.2.0",
     "@chakra-ui/number-input": "^2.1.2",
     "@chakra-ui/react": "^3.13.0",
@@ -32,7 +33,7 @@
     "react-dom": "^18.3.1",
     "react-icon": "^1.0.0",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.3.0"
+    "react-router-dom": "^7.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
