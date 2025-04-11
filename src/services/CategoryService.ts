@@ -1,14 +1,5 @@
 import Api from "./Api/api";
-
-export type Category = {
-  id: number;
-  name: string;
-};
-
-type ApiResponse<T> = {
-  data: T;
-  message: string | null;
-};
+import { ApiResponse } from "./types/typing";
 
 // Get api Category
 export const FetchCategory = async <T>(url: string): Promise<T> => {

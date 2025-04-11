@@ -4,15 +4,25 @@ import {
   PaginationPrevTrigger,
   PaginationItems,
   PaginationNextTrigger,
-} from "./pagination";
+} from "../ui/pagination";
 
-export function Pagination() {
+export type paginationProps = {
+  totalCount: number;
+  itemsPerPage: number;
+  currentPage: number;
+};
+
+export function Pagination({
+  totalCount,
+  itemsPerPage,
+  currentPage,
+}: paginationProps) {
   return (
     <>
       <PaginationRoot
-        count={20}
-        pageSize={2}
-        defaultPage={1}
+        count={totalCount}
+        pageSize={itemsPerPage}
+        defaultPage={currentPage}
         marginTop={"1rem"}
         marginLeft={"2rem"}
       >

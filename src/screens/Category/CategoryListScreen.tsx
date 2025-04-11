@@ -11,7 +11,6 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Pagination } from "../../components/ui/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -21,8 +20,8 @@ import {
   FetchCategory,
   UpdateCategory,
 } from "../../services/CategoryService";
+import { Category } from "../../services/types/typing";
 import Navbar from "../../components/commons/navbar";
-import { Category } from "../../services/CategoryService";
 
 export default function CategoryListScreen() {
   const MotionDiv = motion.div;
@@ -38,7 +37,7 @@ export default function CategoryListScreen() {
 
   const getCategory = async () => {
     try {
-      const responseGet = await FetchCategory<Category[]>("/category");
+      const responseGet = await FetchCategory<Category[]>(`/category`);
       setCategories(responseGet);
     } catch (error) {
       console.log("Error getting", error);
@@ -301,9 +300,6 @@ export default function CategoryListScreen() {
             ))}
           </Table.Body>
         </Table.Root>
-      </Flex>
-      <Flex justifyContent={"center"}>
-        <Pagination />
       </Flex>
     </>
   );
