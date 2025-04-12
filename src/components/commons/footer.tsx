@@ -11,7 +11,7 @@ export default function Footer() {
           justifyContent={"space-between"}
           flexDirection={"row"}
           pt={"3rem"}
-          pb={"2rem"}
+          pb={"3rem"}
         >
           <Text>
             Inventory<Text fontWeight={"bold"}>Management</Text>
@@ -64,7 +64,7 @@ export default function Footer() {
           </Flex>
         </Flex>
         <hr />
-        <Flex justifyContent={"center"} flexDirection={"row"} marginTop={"2rem"}>
+        <Flex justifyContent={"center"} flexDirection={"row"} marginTop={"2rem"} pb={"2rem"}>
           <Text color={"whiteAlpha."}>
             © 2025 Arjuna, Inc. All rights reserved.
           </Text>

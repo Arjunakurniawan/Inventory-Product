@@ -37,10 +37,9 @@ export default function Navbar() {
           display={{ base: "none", md: "flex" }}
           alignItems={"center"}
           fontWeight={"600"}
-          // bg={useColorModeValue("gray.100", "gray.900")}
         >
           <Text pointerEvents={"none"}>Inventory Management</Text>
-          <Flex gap={"3rem"} >
+          <Flex gap={"3rem"}>
             <ChakraRouterLink as={RouterLink} to="/" outline={"none"}>
               Home
             </ChakraRouterLink>
