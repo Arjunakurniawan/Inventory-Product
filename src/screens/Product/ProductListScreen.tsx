@@ -1,10 +1,12 @@
-import { Flex, Table, Button, Text } from "@chakra-ui/react";
+import { Flex, Table, Button, Text, Container } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Pagination } from "../../components/chakraCustoms/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
 import Navbar from "../../components/commons/navbar";
+import { useColorModeValue } from "../../components/ui/color-mode";
+import Footer from "../../components/commons/footer";
 
 export default function ProductListScreen() {
   const dataProducts = [
@@ -176,92 +178,94 @@ export default function ProductListScreen() {
   return (
     <>
       <Navbar />
-      <Flex
-        justifyContent={"space-between"}
-        alignContent={"center"}
-        pt={"2rem"}
-        mx={"2rem"}
+      <Container
+        fluid
+        bg={useColorModeValue("gray.100", "gray.900")}
+        mt={"-3rem"}
+        paddingBottom={"3rem"}
       >
-        <Text
-          fontSize={"lg"}
-          textDecoration={"underline solid#939393"}
-          pointerEvents={"none"}
+        <Flex
+          justifyContent={"space-between"}
+          alignContent={"center"}
+          pt={"2rem"}
+          mx={"2rem"}
         >
-          Data Product
-        </Text>
-        <ChakraRouterLink to={"/FormAddProduct"} textDecoration={"none"}>
-          <Button
-            colorPalette={"cyan"}
-            variant={"outline"}
-            rounded={"md"}
-            _hover={{}}
+          <Text
+            fontSize={"lg"}
+            textDecoration={"underline solid#939393"}
+            pointerEvents={"none"}
           >
-            <MotionDiv
-              whileHover={{ rotate: 30 }}
-              transition={{ duration: 0.2, ease: "easeIn" }}
+            Data Product
+          </Text>
+          <ChakraRouterLink to={"/FormAddProduct"} textDecoration={"none"}>
+            <Button
+              colorPalette={"cyan"}
+              variant={"outline"}
+              rounded={"md"}
+              _hover={{}}
             >
-              <FaPlus />
-            </MotionDiv>
-            Add new Category
-          </Button>
-        </ChakraRouterLink>
-      </Flex>
-      <Flex px={"1rem"} mt={"0.5rem"}>
-        <Table.Root size="lg" interactive>
-          <Table.Header pointerEvents={"none"}>
-            <Table.Row>
-              <Table.ColumnHeader>no</Table.ColumnHeader>
-              <Table.ColumnHeader>name</Table.ColumnHeader>
-              <Table.ColumnHeader>image</Table.ColumnHeader>
-              <Table.ColumnHeader>description</Table.ColumnHeader>
-              <Table.ColumnHeader>stock</Table.ColumnHeader>
-              <Table.ColumnHeader>price</Table.ColumnHeader>
-              {/* <Table.ColumnHeader textAlign={"center"}>
-                WarehouseId
-              </Table.ColumnHeader>
-              <Table.ColumnHeader textAlign={"center"}>
-                CategoryId
-              </Table.ColumnHeader> */}
-              <Table.ColumnHeader textAlign={"center"}>
-                Action
-              </Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {dataProducts.map((product, index) => (
-              <Table.Row key={product.id}>
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{product.name}</Table.Cell>
-                <Table.Cell>{product.imageUrl}</Table.Cell>
-                <Table.Cell>{product.description}</Table.Cell>
-                <Table.Cell>{product.stock}</Table.Cell>
-                <Table.Cell>Rp.{product.price}</Table.Cell>
-                {/* <Table.Cell textAlign={"center"}>
+              <MotionDiv
+                whileHover={{ rotate: 30 }}
+                transition={{ duration: 0.2, ease: "easeIn" }}
+              >
+                <FaPlus />
+              </MotionDiv>
+              Add new Category
+            </Button>
+          </ChakraRouterLink>
+        </Flex>
+        <Flex px={"1rem"} mt={"1rem"} mb={""}>
+          <Table.Root size="lg" interactive>
+            <Table.Header pointerEvents={"none"}>
+              <Table.Row>
+                <Table.ColumnHeader>no</Table.ColumnHeader>
+                <Table.ColumnHeader>name</Table.ColumnHeader>
+                <Table.ColumnHeader>image</Table.ColumnHeader>
+                <Table.ColumnHeader>description</Table.ColumnHeader>
+                <Table.ColumnHeader>stock</Table.ColumnHeader>
+                <Table.ColumnHeader>price</Table.ColumnHeader>
+                <Table.ColumnHeader textAlign={"center"}>
+                  Action
+                </Table.ColumnHeader>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {dataProducts.map((product, index) => (
+                <Table.Row key={product.id}>
+                  <Table.Cell>{index + 1}</Table.Cell>
+                  <Table.Cell>{product.name}</Table.Cell>
+                  <Table.Cell>{product.imageUrl}</Table.Cell>
+                  <Table.Cell>{product.description}</Table.Cell>
+                  <Table.Cell>{product.stock}</Table.Cell>
+                  <Table.Cell>Rp.{product.price}</Table.Cell>
+                  {/* <Table.Cell textAlign={"center"}>
                   {product.warehouseId}
                 </Table.Cell>
                 <Table.Cell textAlign={"center"}>
                   {product.categoryId}
                 </Table.Cell> */}
-                <Table.Cell
-                  display={"flex"}
-                  justifyContent={"end"}
-                  gap={"1rem"}
-                >
-                  <Button variant="outline" size="sm" colorPalette={"blue"}>
-                    <FaEdit />
-                    Edit
-                  </Button>
-                  <Button variant="outline" size="sm" colorPalette={"red"}>
-                    <FaRegTrashAlt />
-                    Delete
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Flex>
-      <Pagination />
+                  <Table.Cell
+                    display={"flex"}
+                    justifyContent={"end"}
+                    gap={"1rem"}
+                  >
+                    <Button variant="outline" size="sm" colorPalette={"blue"}>
+                      <FaEdit />
+                      Edit
+                    </Button>
+                    <Button variant="outline" size="sm" colorPalette={"red"}>
+                      <FaRegTrashAlt />
+                      Delete
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Flex>
+        <Pagination />
+      </Container>
+      <Footer />
     </>
   );
 }
