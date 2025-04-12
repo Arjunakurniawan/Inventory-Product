@@ -11,26 +11,26 @@ import { Warehouse } from "../../services/types/typing";
 import { useEffect, useState } from "react";
 
 export default function WarehouseListScreen() {
-  const dataProduct = [
-    {
-      id: 1,
-      name: "Laptop",
-      address: "jl.kenangan, dusun indah",
-      phone: "0847384974",
-    },
-    {
-      id: 2,
-      name: "Laptop",
-      address: "jl.kenangan, dusun indah",
-      phone: "0847384974",
-    },
-    {
-      id: 3,
-      name: "Laptop",
-      address: "jl.kenangan, dusun indah",
-      phone: "0847384974",
-    },
-  ];
+  // const dataProduct = [
+  //   {
+  //     id: 1,
+  //     name: "Laptop",
+  //     address: "jl.kenangan, dusun indah",
+  //     phone: "0847384974",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Laptop",
+  //     address: "jl.kenangan, dusun indah",
+  //     phone: "0847384974",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Laptop",
+  //     address: "jl.kenangan, dusun indah",
+  //     phone: "0847384974",
+  //   },
+  // ];
 
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
 

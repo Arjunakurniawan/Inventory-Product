@@ -4,6 +4,7 @@ import { Pagination } from "../../components/chakraCustoms/paginationCustom";
 import { InputGroup } from "../../components/ui/input-group";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import Navbar from "../../components/commons/navbar";
+import Footer from "../../components/commons/footer";
 
 export default function HomeScreen() {
   const items = [
@@ -113,6 +114,7 @@ export default function HomeScreen() {
         </Table.Root>
       </Flex>
       <Pagination />
+      <Footer />
     </>
   );
 }
