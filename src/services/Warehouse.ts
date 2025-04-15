@@ -1,5 +1,5 @@
 import Api from "./Api/api";
-import { ApiResponse } from "./types/typing";
+import { ApiResponse } from "../types/typing";
 
 export const FetchWarehouse = async <Warehouse>(
   url: string
@@ -13,11 +13,11 @@ export const FetchWarehouse = async <Warehouse>(
   }
 };
 
-export const createCategory = async <Warehouse>(
+export const CreateWarehouse = async <Warehouse>(
   url: string,
   newWarehouse: {
     name: string;
-    phone: number;
+    phone: string;
     address: string;
   }
 ): Promise<Warehouse> => {

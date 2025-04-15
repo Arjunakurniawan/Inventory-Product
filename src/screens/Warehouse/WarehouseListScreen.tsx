@@ -1,17 +1,33 @@
-import { Flex, Table, Button, Text, Container } from "@chakra-ui/react";
+import {
+  Flex,
+  Table,
+  Button,
+  Text,
+  Container,
+  Dialog,
+  DialogTrigger,
+  Portal,
+  Stack,
+  Field,
+  Input,
+  Textarea,
+} from "@chakra-ui/react";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
-import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
 import Navbar from "../../components/commons/navbar";
 import Footer from "../../components/commons/footer";
-import { FetchWarehouse } from "../../services/WarehouseService";
-import { Warehouse } from "../../services/types/typing";
+import { CreateWarehouse, FetchWarehouse } from "../../services/Warehouse";
+import { Warehouse } from "../../types/typing";
 import { useEffect, useState } from "react";
 
 export default function WarehouseListScreen() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [inputValueAddress, setInputValueAddress] = useState("");
+  const [textError, setTextError] = useState("");
 
   const getWarehouse = async () => {
     try {
@@ -19,6 +35,37 @@ export default function WarehouseListScreen() {
       setWarehouses(responseGet);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (inputValue === "") {
+      setTextError("this field is required");
+      console.log("this is error text", textError);
+      return;
+    }
+    try {
+      const responseCreateData = await CreateWarehouse<Warehouse>(
+        "/warehouse/create",
+        {
+          name: inputValue,
+          phone: inputValue,
+          address: inputValue,
+        }
+      );
+
+      if (responseCreateData) {
+        setWarehouses([...warehouses, responseCreateData]);
+      }
+
+      setInputValue("");
+      setTextError("");
+      console.log("success added", responseCreateData);
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   };
 
@@ -50,22 +97,96 @@ export default function WarehouseListScreen() {
           >
             Data Warehouse
           </Text>
-          <ChakraRouterLink to={"/FormAddProduct"} textDecoration={"none"}>
-            <Button
-              colorPalette={"cyan"}
-              variant={"outline"}
-              rounded={"md"}
-              _hover={{}}
-            >
-              <MotionDiv
-                whileHover={{ rotate: 30 }}
-                transition={{ duration: 0.2, ease: "easeIn" }}
+          <Dialog.Root open={isOpen}>
+            <DialogTrigger>
+              <Button
+                colorPalette={"cyan"}
+                variant={"outline"}
+                rounded={"md"}
+                _hover={{}}
+                onClick={() => setIsOpen(true)}
               >
-                <FaPlus />
-              </MotionDiv>
-              Add new Warehouse
-            </Button>
-          </ChakraRouterLink>
+                <MotionDiv
+                  whileHover={{ rotate: 30 }}
+                  transition={{ duration: 0.2, ease: "easeIn" }}
+                >
+                  <FaPlus />
+                </MotionDiv>
+                Add new Warehouse
+              </Button>
+            </DialogTrigger>
+            <Portal>
+              <Dialog.Backdrop backdropFilter={"blur(5px)"} />
+              <Dialog.Positioner>
+                <Dialog.Content>
+                  <Dialog.Header>
+                    <Dialog.Title>Add New Category</Dialog.Title>
+                  </Dialog.Header>
+                  <Dialog.Body pb="4">
+                    <Stack gap="4">
+                      <Field.Root invalid>
+                        <Field.Label>Name Warehouse</Field.Label>
+                        <Input
+                          type="text"
+                          placeholder="Add here..."
+                          value={inputValue}
+                          onChange={(e) => {
+                            setInputValue(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
+                        <Field.Label>Address</Field.Label>
+                        <Textarea
+                          placeholder="Add Location..."
+                          value={inputValueAddress}
+                          onChange={(e) => {
+                            setInputValueAddress(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
+                      </Field.Root>
+                    </Stack>
+                  </Dialog.Body>
+                  <Dialog.Footer>
+                    <Dialog.ActionTrigger asChild>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsOpen(false)}
+                        type="submit"
+                      >
+                        Cancel
+                      </Button>
+                    </Dialog.ActionTrigger>
+                    <Button onClick={handleAdd}>Add</Button>
+                  </Dialog.Footer>
+                </Dialog.Content>
+              </Dialog.Positioner>
+            </Portal>
+          </Dialog.Root>
         </Flex>
         <Flex px={"1rem"} mt={"1.5rem"}>
           <Table.Root size="lg" interactive>

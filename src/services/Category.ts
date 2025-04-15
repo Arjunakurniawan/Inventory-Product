@@ -1,5 +1,5 @@
 import Api from "./Api/api";
-import { ApiResponse } from "./types/typing";
+import { ApiResponse } from "../types/typing";
 
 // Get api Category
 export const FetchCategory = async <T>(url: string): Promise<T> => {

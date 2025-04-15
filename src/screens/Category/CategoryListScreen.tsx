@@ -20,8 +20,8 @@ import {
   DeleteCategory,
   FetchCategory,
   UpdateCategory,
-} from "../../services/CategoryService";
-import { Category } from "../../services/types/typing";
+} from "../../services/Category";
+import { Category } from "../../types/typing";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import Navbar from "../../components/commons/navbar";
 import Footer from "../../components/commons/footer";
@@ -264,7 +264,7 @@ export default function CategoryListScreen() {
           </Dialog.Root>
         </Flex>
         <Flex px={"1rem"} mt={"1.5rem"} justifyContent={"center"}>
-          <Table.Root size="lg" interactive w={"85%"}>
+          <Table.Root size="lg" interactive>
             <Table.Header pointerEvents={"none"}>
               <Table.Row>
                 <Table.ColumnHeader textAlign={"center"}>no</Table.ColumnHeader>
