@@ -2,8 +2,8 @@ import {
   Container,
   Flex,
   IconButton,
+  Link,
   Span,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import { ChakraRouterLink } from "../ui/chakraRouterLink";
@@ -92,7 +92,7 @@ export default function Footer() {
               Management
             </Span>
           </Text>
-          <Flex marginLeft={"2rem"} marginTop={"2rem"}>
+          <Flex marginLeft={"2rem"} marginTop={"1rem"}>
             <IconButton
               bg={useColorModeValue("white", "black")}
               color={useColorModeValue("black", "white")}

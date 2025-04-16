@@ -139,8 +139,7 @@ export default function WarehouseListScreen() {
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
         mt={"-1rem"}
-        paddingBottom={"10rem"}
-        border={"1px solid"}
+        paddingBottom={"5rem"}
       >
         <Flex
           justifyContent={"space-between"}
@@ -152,6 +151,7 @@ export default function WarehouseListScreen() {
             fontSize={"lg"}
             textDecoration={"underline solid#939393"}
             pointerEvents={"none"}
+            marginRight={"1rem"}
           >
             Data Warehouse
           </Text>

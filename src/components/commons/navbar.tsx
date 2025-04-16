@@ -97,6 +97,7 @@ export default function Navbar() {
                 bg={useColorModeValue("white", "gray.800")}
                 marginLeft={"-4rem"}
                 marginTop={"16rem"}
+                position={"absolute"}
                 w={"14rem"}
                 fontWeight={"normal"}
                 padding={"0.5rem"}
@@ -129,7 +130,11 @@ export default function Navbar() {
         </Flex>
 
         {/* mobile Sidebar */}
-        <Flex padding={"1.5rem"} justifyContent={"space-between"}>
+        <Flex
+          padding={"1.5rem"}
+          justifyContent={"space-between"}
+          paddingTop={"1rem"}
+        >
           <Drawer.Root open={open} placement="start">
             <Drawer.Trigger asChild>
               <IconButton

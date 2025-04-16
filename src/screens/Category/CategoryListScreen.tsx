@@ -10,6 +10,8 @@ import {
   Field,
   Input,
   Container,
+  Box,
+  TableScrollArea,
 } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -123,8 +125,7 @@ export default function CategoryListScreen() {
       <Container
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
-        mt={"-3rem"}
-        paddingBottom={"9rem"}
+        paddingBottom={"5rem"}
       >
         <Flex
           justifyContent={"space-between"}
@@ -265,53 +266,116 @@ export default function CategoryListScreen() {
           </Dialog.Root>
         </Flex>
         <Flex px={"1rem"} mt={"1.5rem"} justifyContent={"center"}>
-          <Table.Root size="lg" interactive>
-            <Table.Header pointerEvents={"none"}>
-              <Table.Row>
-                <Table.ColumnHeader textAlign={"center"}>no</Table.ColumnHeader>
-                <Table.ColumnHeader textAlign={"center"}>
-                  name
-                </Table.ColumnHeader>
-                <Table.ColumnHeader textAlign={"center"}>
-                  Action
-                </Table.ColumnHeader>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {categories.map((category, index) => (
+          <Box w={"100%"} display={{ base: "none", md: "flex" }}>
+            <Table.Root size="lg" interactive>
+              <Table.Header pointerEvents={"none"}>
                 <Table.Row>
-                  <Table.Cell textAlign={"center"} key={category.id}>
-                    {index + 1}
-                  </Table.Cell>
-                  <Table.Cell textAlign={"center"}>{category.name}</Table.Cell>
-                  <Table.Cell
-                    display={"flex"}
-                    gap={"1rem"}
-                    justifyContent={"center"}
-                  >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      colorPalette={"blue"}
-                      onClick={() => handleEditClick(category)}
-                    >
-                      <FaEdit />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      colorPalette={"red"}
-                      onClick={() => handleDelete(category.id)}
-                    >
-                      <FaRegTrashAlt />
-                      Delete
-                    </Button>
-                  </Table.Cell>
+                  <Table.ColumnHeader textAlign={"center"}>
+                    no
+                  </Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign={"center"}>
+                    name
+                  </Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign={"center"}>
+                    Action
+                  </Table.ColumnHeader>
                 </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
+              </Table.Header>
+              <Table.Body>
+                {categories.map((category, index) => (
+                  <Table.Row>
+                    <Table.Cell textAlign={"center"} key={category.id}>
+                      {index + 1}
+                    </Table.Cell>
+                    <Table.Cell textAlign={"center"}>
+                      {category.name}
+                    </Table.Cell>
+                    <Table.Cell
+                      display={"flex"}
+                      gap={"1rem"}
+                      justifyContent={"center"}
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"blue"}
+                        onClick={() => handleEditClick(category)}
+                      >
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"red"}
+                        onClick={() => handleDelete(category.id)}
+                      >
+                        <FaRegTrashAlt />
+                        Delete
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+
+          {/* Mobile Table */}
+          <Box w={"100%"} display={{ base: "flex", md: "none" }}>
+            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"} maxW={"xl"}>
+              <Table.Root size="lg" interactive>
+                <Table.Header pointerEvents={"none"}>
+                  <Table.Row>
+                    <Table.ColumnHeader textAlign={"center"}>
+                      no
+                    </Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"center"}>
+                      name
+                    </Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"center"}>
+                      Action
+                    </Table.ColumnHeader>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {categories.map((category, index) => (
+                    <Table.Row>
+                      <Table.Cell textAlign={"center"} key={category.id}>
+                        {index + 1}
+                      </Table.Cell>
+                      <Table.Cell textAlign={"center"}>
+                        {category.name}
+                      </Table.Cell>
+                      <Table.Cell
+                        display={"flex"}
+                        gap={"1rem"}
+                        justifyContent={"center"}
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"blue"}
+                          onClick={() => handleEditClick(category)}
+                        >
+                          <FaEdit />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"red"}
+                          onClick={() => handleDelete(category.id)}
+                        >
+                          <FaRegTrashAlt />
+                          Delete
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table.Root>
+            </TableScrollArea>
+          </Box>
         </Flex>
       </Container>
       <Footer />
