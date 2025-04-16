@@ -11,6 +11,8 @@ import {
   Field,
   Input,
   Textarea,
+  TableScrollArea,
+  Box,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
@@ -18,18 +20,28 @@ import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import Navbar from "../../components/commons/navbar";
 import Footer from "../../components/commons/footer";
-import { CreateWarehouse, FetchWarehouse } from "../../services/Warehouse";
+import {
+  CreateWarehouse,
+  DeleteWarehouse,
+  FetchWarehouse,
+  UpdateWarehouse,
+} from "../../services/Warehouse";
 import { Warehouse } from "../../types/typing";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function WarehouseListScreen() {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputValueAddress, setInputValueAddress] = useState("");
+  const [inputValuePhone, setInputValuePhone] = useState("");
   const [textError, setTextError] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const [seledtedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(
+    null
+  );
 
-  const getWarehouse = async () => {
+  const getApi = async () => {
     try {
       const responseGet = await FetchWarehouse<Warehouse[]>("/warehouse");
       setWarehouses(responseGet);
@@ -41,7 +53,11 @@ export default function WarehouseListScreen() {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (inputValue === "") {
+    if (
+      inputValue === "" ||
+      inputValueAddress === "" ||
+      inputValuePhone === ""
+    ) {
       setTextError("this field is required");
       console.log("this is error text", textError);
       return;
@@ -51,8 +67,8 @@ export default function WarehouseListScreen() {
         "/warehouse/create",
         {
           name: inputValue,
-          phone: inputValue,
-          address: inputValue,
+          address: inputValueAddress,
+          phone: inputValuePhone,
         }
       );
 
@@ -61,7 +77,11 @@ export default function WarehouseListScreen() {
       }
 
       setInputValue("");
+      setInputValueAddress("");
+      setInputValuePhone("");
       setTextError("");
+      getApi();
+      setIsOpen(false);
       console.log("success added", responseCreateData);
     } catch (error) {
       console.error(error);
@@ -69,8 +89,45 @@ export default function WarehouseListScreen() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const responseDelete = await DeleteWarehouse<Warehouse>(`/warehouse/${id}`);
+    if (responseDelete) {
+      setWarehouses(warehouses.filter((warehouse) => warehouse.id === id));
+    }
+    getApi();
+    console.log("success Deleted");
+  };
+
+  const handleEditClick = async (warehouse: Warehouse) => {
+    setIsEdit(true);
+    setSelectedWarehouse(warehouse);
+    setInputValue(warehouse.name);
+    setInputValueAddress(warehouse.address);
+    setInputValuePhone(warehouse.phone);
+  };
+
+  const handleEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const responseEdit = await UpdateWarehouse<Warehouse>(
+        `/warehouse/update/${seledtedWarehouse?.id}`,
+        { name: inputValue, address: inputValueAddress, phone: inputValuePhone }
+      );
+
+      if (responseEdit) {
+        setWarehouses([...warehouses, responseEdit]);
+      }
+
+      getApi();
+      setIsEdit(false);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
-    getWarehouse();
+    getApi();
   }, []);
 
   const MotionDiv = motion.div;
@@ -81,8 +138,9 @@ export default function WarehouseListScreen() {
       <Container
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
-        mt={"-3rem"}
+        mt={"-1rem"}
         paddingBottom={"10rem"}
+        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}
@@ -168,6 +226,28 @@ export default function WarehouseListScreen() {
                             {textError}
                           </Field.ErrorText>
                         )}
+                        <Field.Label>Phone</Field.Label>
+                        <Input
+                          type="text"
+                          placeholder="Add Phone..."
+                          value={inputValuePhone}
+                          onChange={(e) => {
+                            setInputValuePhone(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
                       </Field.Root>
                     </Stack>
                   </Dialog.Body>
@@ -187,45 +267,210 @@ export default function WarehouseListScreen() {
               </Dialog.Positioner>
             </Portal>
           </Dialog.Root>
+
+          <Dialog.Root open={isEdit}>
+            <Portal>
+              <Dialog.Backdrop backdropFilter={"blur(5px)"} />
+              <Dialog.Positioner>
+                <Dialog.Content>
+                  <Dialog.Header>
+                    <Dialog.Title>Add New Category</Dialog.Title>
+                  </Dialog.Header>
+                  <Dialog.Body pb="4">
+                    <Stack gap="4">
+                      <Field.Root invalid>
+                        <Field.Label>Name Warehouse</Field.Label>
+                        <Input
+                          type="text"
+                          placeholder="Add here..."
+                          value={inputValue}
+                          onChange={(e) => {
+                            setInputValue(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
+                        <Field.Label>Address</Field.Label>
+                        <Textarea
+                          placeholder="Add Location..."
+                          value={inputValueAddress}
+                          onChange={(e) => {
+                            setInputValueAddress(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
+                        <Field.Label>Phone</Field.Label>
+                        <Input
+                          type="text"
+                          placeholder="Add Phone..."
+                          value={inputValuePhone}
+                          onChange={(e) => {
+                            setInputValuePhone(e.target.value);
+                            setTextError("");
+                          }}
+                          borderColor={textError ? "red.500" : "gray.300"}
+                          _focus={{
+                            borderColor: textError ? "red.500" : "gray.300",
+                            boxShadow: "none",
+                          }}
+                          rounded="md"
+                          outline={"none"}
+                        />
+                        {textError && (
+                          <Field.ErrorText color={"red.500"} fontSize={"sm"}>
+                            {textError}
+                          </Field.ErrorText>
+                        )}
+                      </Field.Root>
+                    </Stack>
+                  </Dialog.Body>
+                  <Dialog.Footer>
+                    <Dialog.ActionTrigger asChild>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setIsEdit(false);
+                          setInputValue("");
+                          setInputValueAddress("");
+                          setInputValuePhone("");
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </Dialog.ActionTrigger>
+                    <Button onClick={handleEdit}>Edit</Button>
+                  </Dialog.Footer>
+                </Dialog.Content>
+              </Dialog.Positioner>
+            </Portal>
+          </Dialog.Root>
         </Flex>
         <Flex px={"1rem"} mt={"1.5rem"}>
-          <Table.Root size="lg" interactive>
-            <Table.Header pointerEvents={"none"}>
-              <Table.Row>
-                <Table.ColumnHeader>no</Table.ColumnHeader>
-                <Table.ColumnHeader>name</Table.ColumnHeader>
-                <Table.ColumnHeader>address</Table.ColumnHeader>
-                <Table.ColumnHeader>phone</Table.ColumnHeader>
-                <Table.ColumnHeader textAlign={"center"}>
-                  Action
-                </Table.ColumnHeader>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {warehouses.map((product, index) => (
-                <Table.Row key={product.id}>
-                  <Table.Cell>{index + 1}</Table.Cell>
-                  <Table.Cell>{product.name}</Table.Cell>
-                  <Table.Cell>{product.address}</Table.Cell>
-                  <Table.Cell>{product.phone}</Table.Cell>
-                  <Table.Cell
-                    display={"flex"}
-                    justifyContent={"center"}
-                    gap={"1rem"}
-                  >
-                    <Button variant="outline" size="sm" colorPalette={"blue"}>
-                      <FaEdit />
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm" colorPalette={"red"}>
-                      <FaRegTrashAlt />
-                      Delete
-                    </Button>
-                  </Table.Cell>
+          <Box w={"100%"} display={{ base: "none", md: "flex" }}>
+            <Table.Root size="lg" interactive>
+              <Table.Header pointerEvents={"none"}>
+                <Table.Row>
+                  <Table.ColumnHeader>no</Table.ColumnHeader>
+                  <Table.ColumnHeader>name</Table.ColumnHeader>
+                  <Table.ColumnHeader>address</Table.ColumnHeader>
+                  <Table.ColumnHeader>phone</Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign={"center"}>
+                    Action
+                  </Table.ColumnHeader>
                 </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
+              </Table.Header>
+              <Table.Body>
+                {warehouses.map((warehouse, index) => (
+                  <Table.Row key={warehouse.id}>
+                    <Table.Cell>{index + 1}</Table.Cell>
+                    <Table.Cell>{warehouse.name}</Table.Cell>
+                    <Table.Cell>{warehouse.address}</Table.Cell>
+                    <Table.Cell>{warehouse.phone}</Table.Cell>
+                    <Table.Cell
+                      display={"flex"}
+                      justifyContent={"center"}
+                      gap={"1rem"}
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"blue"}
+                        onClick={() => handleEditClick(warehouse)}
+                      >
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"red"}
+                        onClick={() => handleDelete(warehouse.id)}
+                      >
+                        <FaRegTrashAlt />
+                        Delete
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+
+          {/* mobile Table */}
+          <Box w={"100%"} display={{ base: "flex", md: "none" }}>
+            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"} maxW={"xl"}>
+              <Table.Root size="lg" interactive>
+                <Table.Header pointerEvents={"none"}>
+                  <Table.Row>
+                    <Table.ColumnHeader>no</Table.ColumnHeader>
+                    <Table.ColumnHeader>name</Table.ColumnHeader>
+                    <Table.ColumnHeader>address</Table.ColumnHeader>
+                    <Table.ColumnHeader>phone</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"center"}>
+                      Action
+                    </Table.ColumnHeader>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {warehouses.map((warehouse, index) => (
+                    <Table.Row key={warehouse.id}>
+                      <Table.Cell>{index + 1}</Table.Cell>
+                      <Table.Cell>{warehouse.name}</Table.Cell>
+                      <Table.Cell>{warehouse.address}</Table.Cell>
+                      <Table.Cell>{warehouse.phone}</Table.Cell>
+                      <Table.Cell
+                        display={"flex"}
+                        justifyContent={"center"}
+                        gap={"1rem"}
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"blue"}
+                          onClick={() => handleEditClick(warehouse)}
+                        >
+                          <FaEdit />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"red"}
+                          onClick={() => handleDelete(warehouse.id)}
+                        >
+                          <FaRegTrashAlt />
+                          Delete
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table.Root>
+            </TableScrollArea>
+          </Box>
         </Flex>
       </Container>
       <Footer />

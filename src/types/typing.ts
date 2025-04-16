@@ -5,10 +5,10 @@ export type Category = {
 };
 
 export type Warehouse = {
-    id: number
-    name: string
-    address : string
-    phone: number
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
 };
 
 export type ApiResponse<T> = {

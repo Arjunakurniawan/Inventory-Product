@@ -1,4 +1,11 @@
-import { Container, Flex, IconButton, Text } from "@chakra-ui/react";
+import {
+  Container,
+  Flex,
+  IconButton,
+  Span,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { ChakraRouterLink } from "../ui/chakraRouterLink";
 import { Link as RouterLink } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa6";
@@ -6,7 +13,7 @@ import { useColorModeValue } from "../ui/color-mode";
 export default function Footer() {
   return (
     <>
-      <Container fluid>
+      <Container fluid display={{ base: "none", md: "block" }}>
         <Flex
           justifyContent={"space-between"}
           flexDirection={"row"}
@@ -64,7 +71,50 @@ export default function Footer() {
           </Flex>
         </Flex>
         <hr />
-        <Flex justifyContent={"center"} flexDirection={"row"} marginTop={"2rem"} pb={"2rem"}>
+        <Flex
+          justifyContent={"center"}
+          flexDirection={"row"}
+          marginTop={"2rem"}
+          pb={"2rem"}
+        >
+          <Text color={"whiteAlpha."}>
+            © 2025 Arjuna, Inc. All rights reserved.
+          </Text>
+        </Flex>
+      </Container>
+
+      {/* mobile Footer */}
+      <Container fluid display={{ base: "block", md: "none" }}>
+        <Flex flexDirection={"column"} justifySelf={"center"} pt={"1rem"}>
+          <Text>
+            Inventory
+            <Span fontWeight={"bold"} marginLeft={"0.2rem"}>
+              Management
+            </Span>
+          </Text>
+          <Flex marginLeft={"2rem"} marginTop={"2rem"}>
+            <IconButton
+              bg={useColorModeValue("white", "black")}
+              color={useColorModeValue("black", "white")}
+            >
+              <FaGithub />
+            </IconButton>
+            <IconButton
+              bg={useColorModeValue("white", "black")}
+              color={useColorModeValue("black", "white")}
+            >
+              <FaInstagram />
+            </IconButton>
+            <IconButton
+              bg={useColorModeValue("white", "black")}
+              color={useColorModeValue("black", "white")}
+            >
+              <FaLinkedin />
+            </IconButton>
+          </Flex>
+        </Flex>
+        <hr />
+        <Flex marginTop={"2rem"} pb={"2rem"} justifyContent={"center"}>
           <Text color={"whiteAlpha."}>
             © 2025 Arjuna, Inc. All rights reserved.
           </Text>

@@ -108,6 +108,7 @@ export default function CategoryListScreen() {
       if (responseEdit) {
         setCategories([...categories, responseEdit]);
       }
+
       getCategory();
       setIsEdit(false);
     } catch (error) {

@@ -29,3 +29,33 @@ export const CreateWarehouse = async <Warehouse>(
     throw error;
   }
 };
+
+export const DeleteWarehouse = async <Warehouse>(url: string) => {
+  try {
+    const response = await Api.delete<ApiResponse<Warehouse>>(url);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const UpdateWarehouse = async <Warehouse>(
+  url: string,
+  updateWarehouse: {
+    name: string;
+    address: string;
+    phone: string;
+  }
+) => {
+  try {
+    const response = await Api.put<ApiResponse<Warehouse>>(
+      url,
+      updateWarehouse
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

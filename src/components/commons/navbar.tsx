@@ -95,7 +95,6 @@ export default function Navbar() {
               </MenuTrigger>
               <MenuContent
                 bg={useColorModeValue("white", "gray.800")}
-                position={"absolute"}
                 marginLeft={"-4rem"}
                 marginTop={"16rem"}
                 w={"14rem"}
