@@ -99,11 +99,13 @@ export default function WarehouseListScreen() {
   };
 
   const handleEditClick = async (warehouse: Warehouse) => {
-    setIsEdit(true);
+    console.log(seledtedWarehouse);
     setSelectedWarehouse(warehouse);
+
     setInputValue(warehouse.name);
     setInputValueAddress(warehouse.address);
     setInputValuePhone(warehouse.phone);
+    setIsEdit(true);
   };
 
   const handleEdit = async (e: React.FormEvent) => {
@@ -121,8 +123,8 @@ export default function WarehouseListScreen() {
       getApi();
       setIsEdit(false);
     } catch (error) {
-      console.error(error);
-      throw error;
+      alert("failed edited");
+      console.error(error, "failed edit");
     }
   };
 
@@ -138,8 +140,8 @@ export default function WarehouseListScreen() {
       <Container
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
-        mt={"-1rem"}
         paddingBottom={"5rem"}
+        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}
@@ -421,7 +423,7 @@ export default function WarehouseListScreen() {
 
           {/* mobile Table */}
           <Box w={"100%"} display={{ base: "flex", md: "none" }}>
-            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"} maxW={"xl"}>
+            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"}>
               <Table.Root size="lg" interactive>
                 <Table.Header pointerEvents={"none"}>
                   <Table.Row>

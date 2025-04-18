@@ -34,7 +34,7 @@ export default function Navbar() {
           justifyContent={"space-between"}
           px={"3rem"}
           py={"1rem"}
-          display={{ base: "none", md: "flex" }}
+          display={{ base: "none", lg: "flex" }}
           alignItems={"center"}
           fontWeight={"600"}
         >
@@ -129,151 +129,161 @@ export default function Navbar() {
           </Flex>
         </Flex>
 
-        {/* mobile Sidebar */}
-        <Flex
-          padding={"1.5rem"}
-          justifyContent={"space-between"}
-          paddingTop={"1rem"}
+        {/* mobile navbar */}
+        <Box
+          display={{
+            base: "block",
+            lg: "none",
+          }}
         >
-          <Drawer.Root open={open} placement="start">
-            <Drawer.Trigger asChild>
-              <IconButton
-                display={{ base: "flex", md: "none" }}
-                aria-label="Open"
-                onClick={onOpen}
-                variant={"outline"}
-                size={"sm"}
-              >
-                <LuMenu />
-              </IconButton>
-            </Drawer.Trigger>
-            <Portal>
-              <DrawerBackdrop backdropFilter={"blur(5px)"} />
-              <Drawer.Positioner>
-                <Drawer.Content>
-                  <Drawer.Header>
-                    <Drawer.Title color={useColorModeValue("#0118D8", "white")}>
-                      Inventory Management
-                    </Drawer.Title>
-                  </Drawer.Header>
-                  <Drawer.Body>
-                    <Flex
-                      flexDirection={"column"}
-                      alignItems={"stretch"}
-                      fontWeight={"bold"}
-                    >
-                      <ChakraRouterLink
-                        as={RouterLink}
-                        to="/"
-                        outline={"none"}
-                        py={"1rem"}
-                        pl={"0.5rem"}
-                        textDecoration={"none"}
-                        _hover={{
-                          bgColor: useColorModeValue(
-                            "blackAlpha.100",
-                            "whiteAlpha.300"
-                          ),
-                        }}
-                      >
-                        Home
-                      </ChakraRouterLink>
-                      <hr />
-                      <ChakraRouterLink
-                        as={RouterLink}
-                        to="/products"
-                        outline={"none"}
-                        py={"1rem"}
-                        pl={"0.5rem"}
-                        textDecoration={"none"}
-                        _hover={{
-                          bgColor: useColorModeValue(
-                            "blackAlpha.100",
-                            "whiteAlpha.300"
-                          ),
-                        }}
-                      >
-                        Products
-                      </ChakraRouterLink>
-                      <hr />
-                      <ChakraRouterLink
-                        as={RouterLink}
-                        to="/category"
-                        outline={"none"}
-                        py={"1rem"}
-                        pl={"0.5rem"}
-                        textDecoration={"none"}
-                        _hover={{
-                          bgColor: useColorModeValue(
-                            "blackAlpha.100",
-                            "whiteAlpha.300"
-                          ),
-                        }}
-                      >
-                        Categories
-                      </ChakraRouterLink>
-                      <hr />
-                      <ChakraRouterLink
-                        as={RouterLink}
-                        to="/warehouse"
-                        outline={"none"}
-                        py={"1rem"}
-                        pl={"0.5rem"}
-                        textDecoration={"none"}
-                        _hover={{
-                          bgColor: useColorModeValue(
-                            "blackAlpha.100",
-                            "whiteAlpha.300"
-                          ),
-                        }}
-                      >
-                        Warehouse
-                      </ChakraRouterLink>
-                      <hr />
-                      <ChakraRouterLink
-                        as={RouterLink}
-                        to="/transactions"
-                        outline={"none"}
-                        py={"1rem"}
-                        pl={"0.5rem"}
-                        textDecoration={"none"}
-                        _hover={{
-                          bgColor: useColorModeValue(
-                            "blackAlpha.100",
-                            "whiteAlpha.300"
-                          ),
-                        }}
-                      >
-                        Transactions
-                      </ChakraRouterLink>
-                    </Flex>
-                  </Drawer.Body>
-                  <Drawer.CloseTrigger asChild>
-                    <CloseButton
-                      size="sm"
-                      onClick={onClose}
-                      variant={"outline"}
-                      mt={"0.5rem"}
-                    />
-                  </Drawer.CloseTrigger>
-                </Drawer.Content>
-              </Drawer.Positioner>
-            </Portal>
-          </Drawer.Root>
-          <IconButton
-            onClick={toggleColorMode}
-            variant="outline"
-            display={{ base: "flex", md: "none" }}
-            size="sm"
-            rounded={"full"}
-            _hover={{
-              textDecoration: "none",
-              bg: useColorModeValue("gray.200", "gray.700"),
-            }}
+          <Flex
+            padding={"1.5rem"}
+            justifyContent={"space-between"}
+            paddingTop={"1rem"}
+            border={"1px solid"}
           >
-            {colorMode === "light" ? <LuSun /> : <LuMoon />}
-          </IconButton>
-        </Flex>
+            <Drawer.Root open={open} placement="start">
+              <Drawer.Trigger asChild>
+                <IconButton
+                  display={{ base: "flex", md: "none" }}
+                  aria-label="Open"
+                  onClick={onOpen}
+                  variant={"outline"}
+                  size={"sm"}
+                >
+                  <LuMenu />
+                </IconButton>
+              </Drawer.Trigger>
+              <Portal>
+                <DrawerBackdrop backdropFilter={"blur(5px)"} />
+                <Drawer.Positioner>
+                  <Drawer.Content>
+                    <Drawer.Header>
+                      <Drawer.Title
+                        color={useColorModeValue("#0118D8", "white")}
+                      >
+                        Inventory Management
+                      </Drawer.Title>
+                    </Drawer.Header>
+                    <Drawer.Body>
+                      <Flex
+                        flexDirection={"column"}
+                        alignItems={"stretch"}
+                        fontWeight={"bold"}
+                      >
+                        <ChakraRouterLink
+                          as={RouterLink}
+                          to="/"
+                          outline={"none"}
+                          py={"1rem"}
+                          pl={"0.5rem"}
+                          textDecoration={"none"}
+                          _hover={{
+                            bgColor: useColorModeValue(
+                              "blackAlpha.100",
+                              "whiteAlpha.300"
+                            ),
+                          }}
+                        >
+                          Home
+                        </ChakraRouterLink>
+                        <hr />
+                        <ChakraRouterLink
+                          as={RouterLink}
+                          to="/products"
+                          outline={"none"}
+                          py={"1rem"}
+                          pl={"0.5rem"}
+                          textDecoration={"none"}
+                          _hover={{
+                            bgColor: useColorModeValue(
+                              "blackAlpha.100",
+                              "whiteAlpha.300"
+                            ),
+                          }}
+                        >
+                          Products
+                        </ChakraRouterLink>
+                        <hr />
+                        <ChakraRouterLink
+                          as={RouterLink}
+                          to="/category"
+                          outline={"none"}
+                          py={"1rem"}
+                          pl={"0.5rem"}
+                          textDecoration={"none"}
+                          _hover={{
+                            bgColor: useColorModeValue(
+                              "blackAlpha.100",
+                              "whiteAlpha.300"
+                            ),
+                          }}
+                        >
+                          Categories
+                        </ChakraRouterLink>
+                        <hr />
+                        <ChakraRouterLink
+                          as={RouterLink}
+                          to="/warehouse"
+                          outline={"none"}
+                          py={"1rem"}
+                          pl={"0.5rem"}
+                          textDecoration={"none"}
+                          _hover={{
+                            bgColor: useColorModeValue(
+                              "blackAlpha.100",
+                              "whiteAlpha.300"
+                            ),
+                          }}
+                        >
+                          Warehouse
+                        </ChakraRouterLink>
+                        <hr />
+                        <ChakraRouterLink
+                          as={RouterLink}
+                          to="/transactions"
+                          outline={"none"}
+                          py={"1rem"}
+                          pl={"0.5rem"}
+                          textDecoration={"none"}
+                          _hover={{
+                            bgColor: useColorModeValue(
+                              "blackAlpha.100",
+                              "whiteAlpha.300"
+                            ),
+                          }}
+                        >
+                          Transactions
+                        </ChakraRouterLink>
+                      </Flex>
+                    </Drawer.Body>
+                    <Drawer.CloseTrigger asChild>
+                      <CloseButton
+                        size="sm"
+                        onClick={onClose}
+                        variant={"outline"}
+                        mt={"0.5rem"}
+                      />
+                    </Drawer.CloseTrigger>
+                  </Drawer.Content>
+                </Drawer.Positioner>
+              </Portal>
+            </Drawer.Root>
+            <IconButton
+              onClick={toggleColorMode}
+              variant="outline"
+              display={{ base: "flex", md: "none" }}
+              size="sm"
+              rounded={"full"}
+              _hover={{
+                textDecoration: "none",
+                bg: useColorModeValue("gray.200", "gray.700"),
+              }}
+            >
+              {colorMode === "light" ? <LuSun /> : <LuMoon />}
+            </IconButton>
+          </Flex>
+        </Box>
       </Box>
     </>
   );

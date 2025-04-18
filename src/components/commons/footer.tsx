@@ -1,11 +1,4 @@
-import {
-  Container,
-  Flex,
-  IconButton,
-  Link,
-  Span,
-  Text,
-} from "@chakra-ui/react";
+import { Container, Flex, IconButton, Span, Text } from "@chakra-ui/react";
 import { ChakraRouterLink } from "../ui/chakraRouterLink";
 import { Link as RouterLink } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa6";

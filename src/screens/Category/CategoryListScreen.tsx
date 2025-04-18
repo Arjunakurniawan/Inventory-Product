@@ -95,6 +95,8 @@ export default function CategoryListScreen() {
   };
 
   const handleEditClick = (category: Category) => {
+    console.log(seledtedCategory);
+
     setSelectedCategory(category);
     setIsEdit(true);
     setInputValue(category.name);
@@ -107,6 +109,7 @@ export default function CategoryListScreen() {
         `/category/update/${seledtedCategory?.id}`,
         { name: inputValue }
       );
+      
       if (responseEdit) {
         setCategories([...categories, responseEdit]);
       }
@@ -126,6 +129,7 @@ export default function CategoryListScreen() {
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
         paddingBottom={"5rem"}
+        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}
@@ -321,8 +325,12 @@ export default function CategoryListScreen() {
           </Box>
 
           {/* Mobile Table */}
-          <Box w={"100%"} display={{ base: "flex", md: "none" }}>
-            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"} maxW={"xl"}>
+          <Box width={"100%"} display={{ base: "flex", lg: "none" }}>
+            <TableScrollArea
+              borderRadius={"sm"}
+              boxShadow={"sm"}
+              width={"50rem"}
+            >
               <Table.Root size="lg" interactive>
                 <Table.Header pointerEvents={"none"}>
                   <Table.Row>
