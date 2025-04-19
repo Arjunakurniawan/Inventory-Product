@@ -140,7 +140,6 @@ export default function Navbar() {
             padding={"1.5rem"}
             justifyContent={"space-between"}
             paddingTop={"1rem"}
-            border={"1px solid"}
           >
             <Drawer.Root open={open} placement="start">
               <Drawer.Trigger asChild>

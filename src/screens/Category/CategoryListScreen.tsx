@@ -109,10 +109,12 @@ export default function CategoryListScreen() {
         `/category/update/${seledtedCategory?.id}`,
         { name: inputValue }
       );
-      
+
       if (responseEdit) {
         setCategories([...categories, responseEdit]);
       }
+
+      console.log(responseEdit);
 
       getCategory();
       setIsEdit(false);
@@ -129,7 +131,6 @@ export default function CategoryListScreen() {
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
         paddingBottom={"5rem"}
-        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}

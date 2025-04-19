@@ -37,7 +37,7 @@ export default function WarehouseListScreen() {
   const [inputValuePhone, setInputValuePhone] = useState("");
   const [textError, setTextError] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const [seledtedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(
+  const [selectedWarehouse, setSelectedWarehouse] = useState<Warehouse | null>(
     null
   );
 
@@ -99,25 +99,29 @@ export default function WarehouseListScreen() {
   };
 
   const handleEditClick = async (warehouse: Warehouse) => {
-    console.log(seledtedWarehouse);
+    console.log(selectedWarehouse);
     setSelectedWarehouse(warehouse);
+    setIsEdit(true);
 
     setInputValue(warehouse.name);
     setInputValueAddress(warehouse.address);
     setInputValuePhone(warehouse.phone);
-    setIsEdit(true);
   };
 
   const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const responseEdit = await UpdateWarehouse<Warehouse>(
-        `/warehouse/update/${seledtedWarehouse?.id}`,
+        `/warehouse/update/${selectedWarehouse?.id}`,
         { name: inputValue, address: inputValueAddress, phone: inputValuePhone }
       );
 
       if (responseEdit) {
-        setWarehouses([...warehouses, responseEdit]);
+        setWarehouses((warehouse) =>
+          warehouse.map((warehouse) =>
+            warehouse.id === responseEdit.id ? responseEdit : warehouse
+          )
+        );
       }
 
       getApi();
@@ -141,7 +145,6 @@ export default function WarehouseListScreen() {
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
         paddingBottom={"5rem"}
-        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}

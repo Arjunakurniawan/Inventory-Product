@@ -181,7 +181,6 @@ export default function ProductListScreen() {
       <Container
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
-        mt={"-3rem"}
         paddingBottom={"3rem"}
       >
         <Flex

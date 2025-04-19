@@ -98,8 +98,8 @@ export default function HomeScreen() {
       <Container
         fluid
         bg={useColorModeValue("gray.100", "gray.900")}
-        mt={"-3rem"}
         paddingBottom={"2rem"}
+        border={"1px solid"}
       >
         <Flex
           justifyContent={"space-between"}
