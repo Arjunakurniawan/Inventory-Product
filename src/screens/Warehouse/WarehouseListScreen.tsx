@@ -117,11 +117,7 @@ export default function WarehouseListScreen() {
       );
 
       if (responseEdit) {
-        setWarehouses((warehouse) =>
-          warehouse.map((warehouse) =>
-            warehouse.id === responseEdit.id ? responseEdit : warehouse
-          )
-        );
+        setWarehouses([...warehouses, responseEdit]);
       }
 
       getApi();

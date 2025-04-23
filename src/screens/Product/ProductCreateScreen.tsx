@@ -1,17 +1,15 @@
 import {
-  //   Button,
   Field,
   Fieldset,
   Flex,
-  //   For,
   Input,
-  //   NativeSelect,
   NumberInput,
   Stack,
 } from "@chakra-ui/react";
 import Navbar from "../../components/commons/navbar";
 
 export default function ProductCreateScreen() {
+  
   return (
     <>
       <Navbar />
