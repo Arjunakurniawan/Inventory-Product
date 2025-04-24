@@ -199,6 +199,10 @@ export default function ProductListScreen() {
     getApi();
   }, []);
 
+  // const HandleAdd = async <Product>() => {
+  //   const response = await
+  // }
+
   const MotionDiv = motion.div;
 
   return (
@@ -222,7 +226,7 @@ export default function ProductListScreen() {
           >
             Data Product
           </Text>
-          <ChakraRouterLink to={"/FormAddProduct"} textDecoration={"none"}>
+          <ChakraRouterLink to={"/products/create"} textDecoration={"none"}>
             <Button
               colorPalette={"cyan"}
               variant={"outline"}
@@ -235,7 +239,7 @@ export default function ProductListScreen() {
               >
                 <FaPlus />
               </MotionDiv>
-              Add new Category
+              Add new Product
             </Button>
           </ChakraRouterLink>
         </Flex>
@@ -272,11 +276,7 @@ export default function ProductListScreen() {
                     <Table.Cell textAlign={"center"}>
                       {product.categoryId}
                     </Table.Cell>
-                    <Table.Cell
-                      display={"flex"}
-                      justifyContent={"end"}
-                      gap={"1rem"}
-                    >
+                    <Table.Cell display={"flex"} gap={"1rem"} height={"10rem"}>
                       <Button variant="outline" size="sm" colorPalette={"blue"}>
                         <FaEdit />
                         Edit

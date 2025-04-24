@@ -37,6 +37,9 @@ export default function Navbar() {
           display={{ base: "none", lg: "flex" }}
           alignItems={"center"}
           fontWeight={"600"}
+          boxShadow={"sm"}
+          borderBottom={"0.5px solid"}
+          borderColor={useColorModeValue("gray.100", "gray.700")}
         >
           <Text pointerEvents={"none"}>Inventory Management</Text>
           <Flex gap={"3rem"}>
@@ -140,6 +143,9 @@ export default function Navbar() {
             padding={"1.5rem"}
             justifyContent={"space-between"}
             paddingTop={"1rem"}
+            boxShadow={{ base: "none", md: "sm" }}
+            borderBottom={"0.5px solid"}
+            borderColor={useColorModeValue("gray.100", "gray.700")}
           >
             <Drawer.Root open={open} placement="start">
               <Drawer.Trigger asChild>
