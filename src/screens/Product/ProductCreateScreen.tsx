@@ -17,26 +17,36 @@ import { useColorModeValue } from "../../components/ui/color-mode";
 import Navbar from "../../components/commons/navbar";
 import { useState } from "react";
 import { LuUpload } from "react-icons/lu";
+import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
+import { Link as RouterLink } from "react-router-dom";
+import { ProductCreate } from "../../types/typing";
 
 export default function ProductCreateScreen() {
-  const [inputValueName, setInputValueName] = useState("");
-  const [valueStock, setValueStock] = useState("10");
+  const [inputValue, setInputValue] = useState<ProductCreate>({
+    name: "",
+    description: "",
+    image: "",
+    price: 0,
+    stock: 10,
+    categoryId: 0,
+    warehouseId: 0,
+  });
 
   return (
     <>
       <Navbar />
       <Fieldset.Root
-        maxW={{ base: "40rem", lg: "165vh" }}
+        maxW={{ base: "100%", lg: "165vh" }}
         maxH={"breakpoint-lg"}
         size={"lg"}
-        margin={{ base: "4rem", lg: "4rem" }}
+        margin={{ base: "1rem", lg: "3rem auto", "2xl": "4rem" }}
         alignItems={"center"}
-        p={"5rem"}
+        p={"2rem"}
         border={"1.5px solid"}
         borderColor={useColorModeValue("gray.200", "gray.700")}
         borderStyle={"dashed"}
       >
-        <Stack marginTop={"-3rem"} marginBottom={"1rem"}>
+        <Stack marginBottom={"1rem"}>
           <Fieldset.Legend fontWeight={"bold"} textAlign={"center"}>
             Form Add New Product
           </Fieldset.Legend>
@@ -47,16 +57,22 @@ export default function ProductCreateScreen() {
 
         <Fieldset.Content>
           <Field.Root>
-            <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={"8"}>
-              <SimpleGrid columns={1}>
+            <Grid
+              templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+              gap={"8"}
+              margin={"1rem auto"}
+            >
+              <SimpleGrid columns={1} minChildWidth={"sm"}>
                 <Field.Label fontWeight={"bold"} alignSelf={"start"}>
                   Name
                 </Field.Label>
                 <Input
                   placeholder="Add name..."
-                  value={inputValueName}
+                  value={inputValue.name}
                   alignSelf={"start"}
-                  onChange={(e) => setInputValueName(e.target.value)}
+                  onChange={(e) =>
+                    setInputValue({ ...inputValue, name: e.target.value })
+                  }
                 />
                 <Field.Label fontWeight={"bold"}>warehouseId</Field.Label>
                 <NativeSelect.Root>
@@ -87,24 +103,34 @@ export default function ProductCreateScreen() {
                 <Field.Label fontWeight={"bold"} alignSelf={"start"}>
                   Stock
                 </Field.Label>
-                <NumberInput.Root
-                  border={"1px solid"}
-                  alignSelf={"start"}
-                  value={valueStock}
-                  onValueChange={(e) => setValueStock(e.value)}
-                >
+                <NumberInput.Root border={"1px solid"} alignSelf={"start"}>
                   <NumberInput.Control />
-                  <NumberInput.Input />
+                  <NumberInput.Input
+                    value={inputValue.stock}
+                    onChange={(e) =>
+                      setInputValue({
+                        ...inputValue,
+                        stock: parseInt(e.target.value),
+                      })
+                    }
+                  />
                 </NumberInput.Root>
               </SimpleGrid>
 
-              <SimpleGrid columns={4} rowGap={4}>
+              <SimpleGrid columns={3} rowGap={4}>
                 <Field.Label fontWeight={"bold"}>Price</Field.Label>
                 <Input
                   placeholder="Rp.xxxx"
-                  value={inputValueName}
-                  onChange={(e) => setInputValueName(e.target.value)}
-                  gridColumn={"span 4"}
+                  value={inputValue.price}
+                  onChange={(e) =>
+                    setInputValue({
+                      ...inputValue,
+                      price:
+                        e.target.value === "" ? 0 : parseInt(e.target.value),
+                    })
+                  }
+                  gridColumn={"span 3"}
+                  width={"100%"}
                 />
 
                 <Field.Label fontWeight={"bold"} gridColumn={"span 3"}>
@@ -113,8 +139,8 @@ export default function ProductCreateScreen() {
                 <FileUpload.Root
                   maxW="xl"
                   alignItems="stretch"
-                  maxFiles={10}
-                  gridColumn={"span 4"}
+                  maxFiles={15}
+                  gridColumn={"span 3"}
                 >
                   <FileUpload.HiddenInput />
                   <FileUpload.Dropzone>
@@ -130,8 +156,10 @@ export default function ProductCreateScreen() {
                 </FileUpload.Root>
               </SimpleGrid>
 
-              <SimpleGrid columns={7} columnGap={3}>
-                <Button variant={"surface"}>Cancel</Button>
+              <SimpleGrid columns={4} columnGap={3}>
+                <ChakraRouterLink as={RouterLink} to={"/products"}>
+                  <Button variant={"surface"}>Cancel</Button>
+                </ChakraRouterLink>
                 <Button variant={"outline"}>Add</Button>
               </SimpleGrid>
             </Grid>

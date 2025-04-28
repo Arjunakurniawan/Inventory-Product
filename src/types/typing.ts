@@ -5,10 +5,20 @@ export type Product = {
   price: number;
   stock: number;
   image: string;
-  warehouseId: number;
-  warehouse: Warehouse;
-  categoryId: number;
   category: Category;
+  categoryId: number;
+  warehouse: Warehouse;
+  warehouseId: number;
+};
+
+export type ProductCreate = {
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  image: string;
+  categoryId: number;
+  warehouseId: number;
 };
 
 export type Category = {
