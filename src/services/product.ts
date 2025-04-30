@@ -1,4 +1,4 @@
-import { ApiResponse, Product } from "../types/typing";
+import { ApiResponse, ProductRequest } from "../types/typing";
 import api from "./Api/api";
 
 export const FetchProduct = async <Product>(url: string) => {
@@ -10,9 +10,9 @@ export const FetchProduct = async <Product>(url: string) => {
   }
 };
 
-export const CreateProduct = async (url: string, data: Product) => {
+export const CreateProduct = async (url: string, data: ProductRequest) => {
   try {
-    const response = await api.post<ApiResponse<Product>>(url, data);
+    const response = await api.post<ApiResponse<ProductRequest>>(url, data);
     return response.data.data;
   } catch (error) {
     console.error(error);

@@ -135,6 +135,7 @@ export default function WarehouseListScreen() {
   const MotionDiv = motion.div;
 
   return (
+
     <>
       <Navbar />
       <Container

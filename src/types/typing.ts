@@ -5,13 +5,13 @@ export type Product = {
   price: number;
   stock: number;
   image: string;
-  category: Category;
+  category: Category | null;
   categoryId: number;
-  warehouse: Warehouse;
+  warehouse: Warehouse | null;
   warehouseId: number;
 };
 
-export type ProductCreate = {
+export type ProductRequest = {
   name: string;
   description: string;
   price: number;

@@ -12,17 +12,36 @@ import {
   NumberInput,
   SimpleGrid,
   Stack,
+  Textarea,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import Navbar from "../../components/commons/navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuUpload } from "react-icons/lu";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
-import { Link as RouterLink } from "react-router-dom";
-import { ProductCreate } from "../../types/typing";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { ProductRequest, Warehouse } from "../../types/typing";
+import { CreateProduct } from "../../services/product";
+import { FetchWarehouse } from "../../services/Warehouse";
 
 export default function ProductCreateScreen() {
-  const [inputValue, setInputValue] = useState<ProductCreate>({
+  //get data warehouse
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+
+  const getWarehouses = async () => {
+    try {
+      const response = await FetchWarehouse<Warehouse[]>("/warehouse");
+      setWarehouses(response);
+    } catch (error) {
+      console.error("Error fetching warehouses:", error);
+    }
+  };
+
+  useEffect(() => {
+    getWarehouses();
+  }, []);
+
+  const [inputValue, setInputValue] = useState<ProductRequest>({
     name: "",
     description: "",
     image: "",
@@ -31,6 +50,33 @@ export default function ProductCreateScreen() {
     categoryId: 0,
     warehouseId: 0,
   });
+
+  const navigate = useNavigate();
+
+  const handleAdd = async (e: React.FocusEvent) => {
+    e.preventDefault();
+
+    try {
+      const responseCreate = await CreateProduct<ProductRequest>(
+        "/products/create",
+        {
+          name: inputValue.name,
+          description: inputValue.description,
+          price: inputValue.price,
+          stock: inputValue.stock,
+          image: inputValue.image,
+          categoryId: inputValue.categoryId,
+          warehouseId: inputValue.warehouseId,
+        }
+      );
+
+      if (responseCreate) {
+        navigate("/products");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -74,32 +120,50 @@ export default function ProductCreateScreen() {
                     setInputValue({ ...inputValue, name: e.target.value })
                   }
                 />
-                <Field.Label fontWeight={"bold"}>warehouseId</Field.Label>
-                <NativeSelect.Root>
-                  <NativeSelect.Field name="country">
-                    <For each={["1", "2", "3"]}>
-                      {(item) => (
-                        <option key={item} value={item}>
-                          {item}
+                <Field.Label fontWeight={"bold"} alignSelf={"start"}>
+                  description
+                </Field.Label>
+                <Textarea
+                  placeholder="Add name..."
+                  value={inputValue.description}
+                  alignSelf={"start"}
+                  onChange={(e) =>
+                    setInputValue({
+                      ...inputValue,
+                      description: e.target.value,
+                    })
+                  }
+                />
+                <SimpleGrid columns={2}>
+                  <Field.Label fontWeight={"bold"}>warehouseId</Field.Label>
+                  <Field.Label fontWeight={"bold"}>categoryId</Field.Label>
+                </SimpleGrid>
+
+                <SimpleGrid alignSelf={"center"} columns={2} gap={4}>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field name="warehouse">
+                      <option value="">select warehouse</option>
+                      {warehouses.map((warehouse) => (
+                        <option key={warehouse.id} value={warehouse.id}>
+                          {warehouse.name}
                         </option>
-                      )}
-                    </For>
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator />
-                </NativeSelect.Root>
-                <Field.Label fontWeight={"bold"}>categoryId</Field.Label>
-                <NativeSelect.Root>
-                  <NativeSelect.Field name="country">
-                    <For each={["1", "2", "3"]}>
-                      {(item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      )}
-                    </For>
-                  </NativeSelect.Field>
-                  <NativeSelect.Indicator />
-                </NativeSelect.Root>
+                      ))}
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                  <NativeSelect.Root>
+                    <NativeSelect.Field name="country">
+                      <For each={["1", "2", "3"]}>
+                        {(item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        )}
+                      </For>
+                    </NativeSelect.Field>
+                    <NativeSelect.Indicator />
+                  </NativeSelect.Root>
+                </SimpleGrid>
                 <Field.Label fontWeight={"bold"} alignSelf={"start"}>
                   Stock
                 </Field.Label>
@@ -160,7 +224,9 @@ export default function ProductCreateScreen() {
                 <ChakraRouterLink as={RouterLink} to={"/products"}>
                   <Button variant={"surface"}>Cancel</Button>
                 </ChakraRouterLink>
-                <Button variant={"outline"}>Add</Button>
+                <Button variant={"outline"} onClick={handleAdd}>
+                  Add
+                </Button>
               </SimpleGrid>
             </Grid>
           </Field.Root>
