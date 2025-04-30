@@ -8,6 +8,7 @@ import {
   Grid,
   Icon,
   Input,
+  InputGroup,
   NativeSelect,
   NumberInput,
   SimpleGrid,
@@ -20,13 +21,15 @@ import { useEffect, useState } from "react";
 import { LuUpload } from "react-icons/lu";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { ProductRequest, Warehouse } from "../../types/typing";
+import { Category, ProductRequest, Warehouse } from "../../types/typing";
 import { CreateProduct } from "../../services/product";
 import { FetchWarehouse } from "../../services/Warehouse";
+import { FetchCategory } from "../../services/Category";
 
 export default function ProductCreateScreen() {
-  //get data warehouse
+  //get data Warehouse and Category
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const getWarehouses = async () => {
     try {
@@ -37,8 +40,18 @@ export default function ProductCreateScreen() {
     }
   };
 
+  const getCategory = async () => {
+    try {
+      const response = await FetchCategory<Category[]>("/category");
+      setCategories(response);
+    } catch (error) {
+      console.error("Error fetching warehouses:", error);
+    }
+  };
+
   useEffect(() => {
     getWarehouses();
+    getCategory();
   }, []);
 
   const [inputValue, setInputValue] = useState<ProductRequest>({
@@ -108,7 +121,12 @@ export default function ProductCreateScreen() {
               gap={"8"}
               margin={"1rem auto"}
             >
-              <SimpleGrid columns={1} minChildWidth={"sm"}>
+              <SimpleGrid
+                columns={1}
+                minChildWidth={"100%"}
+                rowGap={4}
+                border={"1px solid"}
+              >
                 <Field.Label fontWeight={"bold"} alignSelf={"start"}>
                   Name
                 </Field.Label>
@@ -141,8 +159,10 @@ export default function ProductCreateScreen() {
 
                 <SimpleGrid alignSelf={"center"} columns={2} gap={4}>
                   <NativeSelect.Root>
-                    <NativeSelect.Field name="warehouse">
-                      <option value="">select warehouse</option>
+                    <NativeSelect.Field
+                      name="warehouse"
+                      placeholder="Select Warehouse"
+                    >
                       {warehouses.map((warehouse) => (
                         <option key={warehouse.id} value={warehouse.id}>
                           {warehouse.name}
@@ -152,14 +172,12 @@ export default function ProductCreateScreen() {
                     <NativeSelect.Indicator />
                   </NativeSelect.Root>
                   <NativeSelect.Root>
-                    <NativeSelect.Field name="country">
-                      <For each={["1", "2", "3"]}>
-                        {(item) => (
-                          <option key={item} value={item}>
-                            {item}
-                          </option>
-                        )}
-                      </For>
+                    <NativeSelect.Field placeholder="Select Category">
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
                     </NativeSelect.Field>
                     <NativeSelect.Indicator />
                   </NativeSelect.Root>
@@ -181,21 +199,22 @@ export default function ProductCreateScreen() {
                 </NumberInput.Root>
               </SimpleGrid>
 
-              <SimpleGrid columns={3} rowGap={4}>
-                <Field.Label fontWeight={"bold"}>Price</Field.Label>
-                <Input
-                  placeholder="Rp.xxxx"
-                  value={inputValue.price}
-                  onChange={(e) =>
-                    setInputValue({
-                      ...inputValue,
-                      price:
-                        e.target.value === "" ? 0 : parseInt(e.target.value),
-                    })
-                  }
-                  gridColumn={"span 3"}
-                  width={"100%"}
-                />
+              <SimpleGrid columns={1} rowGap={4} border={"1px solid"}>
+                <Field.Label fontWeight={"bold"} alignSelf={"start"}>
+                  Price
+                </Field.Label>
+                <InputGroup startElement="Rp" alignSelf={"start"}>
+                  <Input
+                    value={inputValue.price}
+                    onChange={(e) =>
+                      setInputValue({
+                        ...inputValue,
+                        price:
+                          e.target.value === "" ? 0 : parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </InputGroup>
 
                 <Field.Label fontWeight={"bold"} gridColumn={"span 3"}>
                   Upload Image
@@ -220,7 +239,7 @@ export default function ProductCreateScreen() {
                 </FileUpload.Root>
               </SimpleGrid>
 
-              <SimpleGrid columns={4} columnGap={3}>
+              <SimpleGrid columns={{ base: 4, lg: 5 }} columnGap={3}>
                 <ChakraRouterLink as={RouterLink} to={"/products"}>
                   <Button variant={"surface"}>Cancel</Button>
                 </ChakraRouterLink>
