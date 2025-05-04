@@ -1,11 +1,11 @@
-import { Link as RouterLink, LinkProps } from "react-router-dom";
+import { NavLinkProps, NavLink } from "react-router-dom";
 import {
   Link as ChakraLink,
   LinkProps as ChakraLinkProps,
 } from "@chakra-ui/react";
 
-type ChakraRouterLinkProps = ChakraLinkProps & LinkProps;
+type ChakraRouterLinkProps = ChakraLinkProps & NavLinkProps;
 
 export function ChakraRouterLink(props: ChakraRouterLinkProps) {
-  return <ChakraLink as={RouterLink} {...props} />;
+  return <ChakraLink as={NavLink} {...props} />;
 }

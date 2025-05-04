@@ -10,9 +10,9 @@ export const FetchProduct = async <Product>(url: string) => {
   }
 };
 
-export const CreateProduct = async (url: string, data: ProductRequest) => {
+export const CreateProduct = async (url: string, newData: ProductRequest) => {
   try {
-    const response = await api.post<ApiResponse<ProductRequest>>(url, data);
+    const response = await api.post<ApiResponse<ProductRequest>>(url, newData);
     return response.data.data;
   } catch (error) {
     console.error(error);

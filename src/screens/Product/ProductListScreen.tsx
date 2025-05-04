@@ -8,7 +8,7 @@ import {
   TableScrollArea,
 } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-import { Pagination } from "../../components/chakraCustoms/paginationCustom";
+// import { Pagination } from "../../components/chakraCustoms/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
@@ -187,7 +187,7 @@ export default function ProductListScreen() {
             </TableScrollArea>
           </Box>
         </Flex>
-        <Pagination />
+        {/* <Pagination /> */}
       </Container>
       <Footer />
     </>
