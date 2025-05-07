@@ -98,8 +98,8 @@ export default function ProductListScreen() {
                   <Table.Row key={product.id}>
                     <Table.Cell>{index + 1}</Table.Cell>
                     <Table.Cell>{product.name}</Table.Cell>
-                    <Table.Cell>{product.image}</Table.Cell>
                     <Table.Cell>{product.description}</Table.Cell>
+                    <Table.Cell>{product.image}</Table.Cell>
                     <Table.Cell>{product.stock}</Table.Cell>
                     <Table.Cell>Rp.{product.price}</Table.Cell>
                     <Table.Cell textAlign={"center"}>
