@@ -15,7 +15,7 @@ import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
 import Navbar from "../../components/commons/navbar";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import Footer from "../../components/commons/footer";
-import { FetchProduct } from "../../services/product";
+import { DeleteProduct, FetchProduct } from "../../services/product";
 import { useEffect, useState } from "react";
 import { Product } from "../../types/typing";
 
@@ -34,6 +34,21 @@ export default function ProductListScreen() {
   useEffect(() => {
     getApi();
   }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      const responseDelete = await DeleteProduct(`/product/${id}`);
+
+      if (responseDelete) {
+        setProducts(products.filter((product) => product.id === id));
+      }
+
+      getApi();
+      alert("succes Deleted");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const MotionDiv = motion.div;
 
@@ -77,51 +92,66 @@ export default function ProductListScreen() {
         </Flex>
         <Flex px={"1rem"} mt={"1rem"}>
           <Box w={"100%"} display={{ base: "none", md: "flex" }}>
-            <Table.Root size="lg" interactive>
-              <Table.Header pointerEvents={"none"}>
-                <Table.Row>
-                  <Table.ColumnHeader>no</Table.ColumnHeader>
-                  <Table.ColumnHeader>name</Table.ColumnHeader>
-                  <Table.ColumnHeader>description</Table.ColumnHeader>
-                  <Table.ColumnHeader>image</Table.ColumnHeader>
-                  <Table.ColumnHeader>stock</Table.ColumnHeader>
-                  <Table.ColumnHeader>price</Table.ColumnHeader>
-                  <Table.ColumnHeader>categoryId</Table.ColumnHeader>
-                  <Table.ColumnHeader>warehouseId</Table.ColumnHeader>
-                  <Table.ColumnHeader textAlign={"center"}>
-                    Action
-                  </Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {products.map((product, index) => (
-                  <Table.Row key={product.id}>
-                    <Table.Cell>{index + 1}</Table.Cell>
-                    <Table.Cell>{product.name}</Table.Cell>
-                    <Table.Cell>{product.description}</Table.Cell>
-                    <Table.Cell>{product.image}</Table.Cell>
-                    <Table.Cell>{product.stock}</Table.Cell>
-                    <Table.Cell>Rp.{product.price}</Table.Cell>
-                    <Table.Cell textAlign={"center"}>
-                      {product.warehouseId}
-                    </Table.Cell>
-                    <Table.Cell textAlign={"center"}>
-                      {product.categoryId}
-                    </Table.Cell>
-                    <Table.Cell display={"flex"} gap={"1rem"} height={"10rem"}>
-                      <Button variant="outline" size="sm" colorPalette={"blue"}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button variant="outline" size="sm" colorPalette={"red"}>
-                        <FaRegTrashAlt />
-                        Delete
-                      </Button>
-                    </Table.Cell>
+            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"}>
+              <Table.Root size="lg" interactive>
+                <Table.Header pointerEvents={"none"}>
+                  <Table.Row>
+                    <Table.ColumnHeader>no</Table.ColumnHeader>
+                    <Table.ColumnHeader>name</Table.ColumnHeader>
+                    <Table.ColumnHeader>description</Table.ColumnHeader>
+                    <Table.ColumnHeader>image</Table.ColumnHeader>
+                    <Table.ColumnHeader>stock</Table.ColumnHeader>
+                    <Table.ColumnHeader>price</Table.ColumnHeader>
+                    <Table.ColumnHeader>categoryId</Table.ColumnHeader>
+                    <Table.ColumnHeader>warehouseId</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign={"center"}>
+                      Action
+                    </Table.ColumnHeader>
                   </Table.Row>
-                ))}
-              </Table.Body>
-            </Table.Root>
+                </Table.Header>
+                <Table.Body>
+                  {products.map((product, index) => (
+                    <Table.Row key={product.id}>
+                      <Table.Cell>{index + 1}</Table.Cell>
+                      <Table.Cell>{product.name}</Table.Cell>
+                      <Table.Cell>{product.description}</Table.Cell>
+                      <Table.Cell>{product.image}</Table.Cell>
+                      <Table.Cell>{product.stock}</Table.Cell>
+                      <Table.Cell>Rp.{product.price}</Table.Cell>
+                      <Table.Cell textAlign={"center"}>
+                        {product.warehouseId}
+                      </Table.Cell>
+                      <Table.Cell textAlign={"center"}>
+                        {product.categoryId}
+                      </Table.Cell>
+                      <Table.Cell
+                        display={"flex"}
+                        gap={"1rem"}
+                        height={"10rem"}
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"blue"}
+                        >
+                          <FaEdit />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          colorPalette={"red"}
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          <FaRegTrashAlt />
+                          Delete
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table.Root>
+            </TableScrollArea>
           </Box>
 
           {/* mobile Table */}
@@ -175,6 +205,7 @@ export default function ProductListScreen() {
                           variant="outline"
                           size="sm"
                           colorPalette={"red"}
+                          onChange={() => handleDelete(product.id)}
                         >
                           <FaRegTrashAlt />
                           Delete
