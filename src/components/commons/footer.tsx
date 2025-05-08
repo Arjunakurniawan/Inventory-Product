@@ -6,7 +6,7 @@ import { useColorModeValue } from "../ui/color-mode";
 export default function Footer() {
   return (
     <>
-      <Container fluid display={{ base: "none", md: "block" }}>
+      <Container fluid display={{ base: "none", md: "none", lg: "block" }}>
         <Flex
           justifyContent={"space-between"}
           flexDirection={"row"}
@@ -77,7 +77,7 @@ export default function Footer() {
       </Container>
 
       {/* mobile Footer */}
-      <Container fluid display={{ base: "block", md: "none" }}>
+      <Container fluid display={{ base: "block", md: "block", lg: "none" }}>
         <Flex flexDirection={"column"} justifySelf={"center"} pt={"1rem"}>
           <Text>
             Inventory

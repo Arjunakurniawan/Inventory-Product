@@ -65,6 +65,7 @@ export default function ProductListScreen() {
           alignContent={"center"}
           pt={"2rem"}
           mx={"2rem"}
+          gap={5}
         >
           <Text
             fontSize={"lg"}
@@ -91,71 +92,69 @@ export default function ProductListScreen() {
           </ChakraRouterLink>
         </Flex>
         <Flex px={"1rem"} mt={"1rem"}>
-          <Box w={"100%"} display={{ base: "none", md: "flex" }}>
-            <TableScrollArea borderRadius={"sm"} boxShadow={"sm"}>
-              <Table.Root size="lg" interactive>
-                <Table.Header pointerEvents={"none"}>
-                  <Table.Row>
-                    <Table.ColumnHeader>no</Table.ColumnHeader>
-                    <Table.ColumnHeader>name</Table.ColumnHeader>
-                    <Table.ColumnHeader>description</Table.ColumnHeader>
-                    <Table.ColumnHeader>image</Table.ColumnHeader>
-                    <Table.ColumnHeader>stock</Table.ColumnHeader>
-                    <Table.ColumnHeader>price</Table.ColumnHeader>
-                    <Table.ColumnHeader>categoryId</Table.ColumnHeader>
-                    <Table.ColumnHeader>warehouseId</Table.ColumnHeader>
-                    <Table.ColumnHeader textAlign={"center"}>
-                      Action
-                    </Table.ColumnHeader>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {products.map((product, index) => (
-                    <Table.Row key={product.id}>
-                      <Table.Cell>{index + 1}</Table.Cell>
-                      <Table.Cell>{product.name}</Table.Cell>
-                      <Table.Cell>{product.description}</Table.Cell>
-                      <Table.Cell>{product.image}</Table.Cell>
-                      <Table.Cell>{product.stock}</Table.Cell>
-                      <Table.Cell>Rp.{product.price}</Table.Cell>
-                      <Table.Cell textAlign={"center"}>
-                        {product.warehouseId}
-                      </Table.Cell>
-                      <Table.Cell textAlign={"center"}>
-                        {product.categoryId}
-                      </Table.Cell>
-                      <Table.Cell
-                        display={"flex"}
-                        gap={"1rem"}
-                        height={"10rem"}
+          <Box w={"100%"} display={{ base: "none", md: "none", xl: "flex" }}>
+            <Table.Root size="lg">
+              <Table.Header pointerEvents={"none"}>
+                <Table.Row>
+                  <Table.ColumnHeader>no</Table.ColumnHeader>
+                  <Table.ColumnHeader>name</Table.ColumnHeader>
+                  <Table.ColumnHeader>description</Table.ColumnHeader>
+                  <Table.ColumnHeader>image</Table.ColumnHeader>
+                  <Table.ColumnHeader>stock</Table.ColumnHeader>
+                  <Table.ColumnHeader>price</Table.ColumnHeader>
+                  <Table.ColumnHeader>categoryId</Table.ColumnHeader>
+                  <Table.ColumnHeader>warehouseId</Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign={"center"}>
+                    Action
+                  </Table.ColumnHeader>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {products.map((product, index) => (
+                  <Table.Row key={product.id}>
+                    <Table.Cell>{index + 1}</Table.Cell>
+                    <Table.Cell>{product.name}</Table.Cell>
+                    <Table.Cell>{product.description}</Table.Cell>
+                    <Table.Cell>{product.image}</Table.Cell>
+                    <Table.Cell>{product.stock}</Table.Cell>
+                    <Table.Cell>Rp.{product.price}</Table.Cell>
+                    <Table.Cell textAlign={"center"}>
+                      {product.warehouseId}
+                    </Table.Cell>
+                    <Table.Cell textAlign={"center"}>
+                      {product.categoryId}
+                    </Table.Cell>
+                    <Table.Cell display={"flex"} gap={"1rem"} height={"10rem"}>
+                      <Button variant="outline" size="sm" colorPalette={"blue"}>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"red"}
+                        onClick={() => handleDelete(product.id)}
                       >
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          colorPalette={"blue"}
-                        >
-                          <FaEdit />
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          colorPalette={"red"}
-                          onClick={() => handleDelete(product.id)}
-                        >
-                          <FaRegTrashAlt />
-                          Delete
-                        </Button>
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table.Root>
-            </TableScrollArea>
+                        <FaRegTrashAlt />
+                        Delete
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
           </Box>
 
           {/* mobile Table */}
-          <Box w={"100%"} display={{ base: "flex", md: "none" }}>
+          <Box
+            w={"100%"}
+            display={{
+              base: "flex",
+              md: "flex",
+              lg: "flex",
+              xl: "none",
+            }}
+          >
             <TableScrollArea borderRadius={"sm"} boxShadow={"sm"}>
               <Table.Root size="lg" interactive>
                 <Table.Header pointerEvents={"none"}>

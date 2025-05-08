@@ -34,7 +34,7 @@ export default function Navbar() {
           justifyContent={"space-between"}
           px={"3rem"}
           py={"1rem"}
-          display={{ base: "none", lg: "flex" }}
+          display={{ base: "none", lg: "flex", md: "none" }}
           alignItems={"center"}
           fontWeight={"600"}
           boxShadow={"sm"}
@@ -136,6 +136,7 @@ export default function Navbar() {
         <Box
           display={{
             base: "block",
+            md: "block",
             lg: "none",
           }}
         >

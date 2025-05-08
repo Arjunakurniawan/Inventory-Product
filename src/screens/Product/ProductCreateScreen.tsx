@@ -69,7 +69,18 @@ export default function ProductCreateScreen() {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("data yang di kirim", inputValue);
+    if (
+      !inputValue.name ||
+      !inputValue.description ||
+      !inputValue.price ||
+      !inputValue.stock ||
+      !inputValue.image ||
+      !inputValue.categoryId ||
+      !inputValue.warehouseId
+    ) {
+      alert("field is required");
+      return;
+    }
 
     try {
       const responseCreate = await CreateProduct<ProductRequest>(
@@ -87,9 +98,11 @@ export default function ProductCreateScreen() {
 
       if (responseCreate) {
         navigate("/products");
+        alert("success created");
       }
     } catch (error) {
       console.error(error);
+      alert("There something wrong");
     }
   };
 
@@ -143,6 +156,7 @@ export default function ProductCreateScreen() {
                         setInputValue({ ...inputValue, name: e.target.value })
                       }
                     />
+
                     <Field.Label fontWeight={"bold"} alignSelf={"start"}>
                       description
                     </Field.Label>
