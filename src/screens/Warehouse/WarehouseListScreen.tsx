@@ -98,7 +98,7 @@ export default function WarehouseListScreen() {
     console.log("success Deleted");
   };
 
-  const handleEditClick = async (warehouse: Warehouse) => {
+  const handleEditClick =  (warehouse: Warehouse) => {
     console.log(selectedWarehouse);
     setSelectedWarehouse(warehouse);
     setIsEdit(true);

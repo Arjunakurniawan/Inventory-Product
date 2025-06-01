@@ -6,9 +6,11 @@ import {
   Container,
   Box,
   TableScrollArea,
+  Pagination,
+  IconButton,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
-// import { Pagination } from "../../components/chakraCustoms/paginationCustom";
 import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
@@ -18,22 +20,31 @@ import Footer from "../../components/commons/footer";
 import { DeleteProduct, FetchProduct } from "../../services/product";
 import { useEffect, useState } from "react";
 import { Product } from "../../types/typing";
+import { LuChevronRight } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { LuChevronLeft } from "react-icons/lu";
 
 export default function ProductListScreen() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [total, setTotal] = useState(0);
 
-  const getApi = async () => {
+  const getApi = async (page = 1) => {
     try {
-      const responseGet = await FetchProduct<Product[]>("/product");
+      const responseGet = await FetchProduct<Product[]>(
+        `/product?page=${page}&limit=${limit}`
+      );
       setProducts(responseGet || []);
+      setTotal(responseGet?.length || 0);
     } catch (error) {
       console.error(error, "404 not found");
     }
   };
 
   useEffect(() => {
-    getApi();
-  }, []);
+    getApi(page);
+  }, [page]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -50,7 +61,12 @@ export default function ProductListScreen() {
     }
   };
 
+  const handleEdit = (productId: number) => {
+    navigate(`/product/edit/${productId}`);
+  };
+
   const MotionDiv = motion.div;
+  const navigate = useNavigate();
 
   return (
     <>
@@ -74,7 +90,7 @@ export default function ProductListScreen() {
           >
             Data Product
           </Text>
-          <ChakraRouterLink to={"/products/create"} textDecoration={"none"}>
+          <ChakraRouterLink to={"/product/create"} textDecoration={"none"}>
             <Button
               colorPalette={"cyan"}
               variant={"outline"}
@@ -125,7 +141,12 @@ export default function ProductListScreen() {
                       {product.categoryId}
                     </Table.Cell>
                     <Table.Cell display={"flex"} gap={"1rem"} height={"10rem"}>
-                      <Button variant="outline" size="sm" colorPalette={"blue"}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        colorPalette={"blue"}
+                        onClick={() => handleEdit(product.id)}
+                      >
                         <FaEdit />
                         Edit
                       </Button>
@@ -196,6 +217,9 @@ export default function ProductListScreen() {
                           variant="outline"
                           size="sm"
                           colorPalette={"blue"}
+                          onClick={() =>
+                            navigate(`/product/edit/${product.id}`)
+                          }
                         >
                           <FaEdit />
                           Edit
@@ -204,7 +228,7 @@ export default function ProductListScreen() {
                           variant="outline"
                           size="sm"
                           colorPalette={"red"}
-                          onChange={() => handleDelete(product.id)}
+                          onClick={() => handleDelete(product.id)}
                         >
                           <FaRegTrashAlt />
                           Delete
@@ -217,7 +241,36 @@ export default function ProductListScreen() {
             </TableScrollArea>
           </Box>
         </Flex>
-        {/* <Pagination /> */}
+        <Pagination.Root
+          count={total}
+          pageSize={limit}
+          defaultPage={page}
+          marginTop={"1rem"}
+          marginLeft={"2rem"}
+          onChange={(page: number) => setPage(page)}
+        >
+          <ButtonGroup variant="outline" size="sm">
+            <Pagination.PrevTrigger asChild>
+              <IconButton>
+                <LuChevronLeft />
+              </IconButton>
+            </Pagination.PrevTrigger>
+
+            <Pagination.Items
+              render={(page) => (
+                <IconButton variant={{ base: "outline", _selected: "solid" }}>
+                  {page.value}
+                </IconButton>
+              )}
+            />
+
+            <Pagination.NextTrigger asChild>
+              <IconButton>
+                <LuChevronRight />
+              </IconButton>
+            </Pagination.NextTrigger>
+          </ButtonGroup>
+        </Pagination.Root>
       </Container>
       <Footer />
     </>

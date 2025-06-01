@@ -1,6 +1,3 @@
-
-// incoming edit
-
 import {
   Box,
   Button,
@@ -22,17 +19,30 @@ import Navbar from "../../components/commons/navbar";
 import { useEffect, useState } from "react";
 import { LuUpload } from "react-icons/lu";
 import { ChakraRouterLink } from "../../components/ui/chakraRouterLink";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { Category, ProductRequest, Warehouse } from "../../types/typing";
-import { CreateProduct } from "../../services/product";
+import { FetchProductById, UpdateProduct } from "../../services/product";
 import { FetchWarehouse } from "../../services/Warehouse";
 import { FetchCategory } from "../../services/Category";
 import Footer from "../../components/commons/footer";
 
-export default function ProductCreateScreen() {
+export default function ProductEditForm() {
   //get data Warehouse and Category
+
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+
+  const [inputValue, setInputValue] = useState<ProductRequest>({
+    name: "",
+    description: "",
+    price: 0,
+    stock: 0,
+    image: "",
+    categoryId: 0,
+    warehouseId: 0,
+  });
+
+  const { id } = useParams();
 
   const getWarehouses = async () => {
     try {
@@ -55,40 +65,44 @@ export default function ProductCreateScreen() {
   useEffect(() => {
     getWarehouses();
     getCategory();
-  }, []);
 
-  const [inputValue, setInputValue] = useState<ProductRequest>({
-    name: "",
-    description: "",
-    price: 0,
-    stock: 0,
-    image: "",
-    categoryId: 0,
-    warehouseId: 0,
-  });
+    const fetchProduct = async () => {
+      try {
+        const productId = Number(id);
+        const productData = await FetchProductById("/product", productId);
+
+        if (productData) {
+          setInputValue({
+            name: productData.name,
+            description: productData.description,
+            image: productData.image,
+            stock: productData.stock,
+            price: productData.price,
+            categoryId: productData.categoryId,
+            warehouseId: productData.warehouseId,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
   const navigate = useNavigate();
 
-  const handleAdd = async (e: React.FormEvent) => {
+  const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log("data yang di kirim", inputValue);
 
     try {
-      const responseCreate = await CreateProduct<ProductRequest>(
-        "/product/create",
-        {
-          name: inputValue.name,
-          description: inputValue.description,
-          price: inputValue.price,
-          stock: inputValue.stock,
-          image: inputValue.image,
-          categoryId: inputValue.categoryId,
-          warehouseId: inputValue.warehouseId,
-        }
+      const responseEdit = await UpdateProduct(
+        `/product/edit/${id}`,
+        inputValue
       );
 
-      if (responseCreate) {
+      if (responseEdit) {
         navigate("/products");
       }
     } catch (error) {
@@ -151,7 +165,7 @@ export default function ProductCreateScreen() {
                     </Field.Label>
                     <Textarea
                       outline={"none"}
-                      placeholder="Add name..."
+                      placeholder="Add description..."
                       value={inputValue.description}
                       alignSelf={"start"}
                       onChange={(e) =>
@@ -169,7 +183,7 @@ export default function ProductCreateScreen() {
                         <NativeSelect.Field
                           outline={"none"}
                           name="warehouse"
-                          placeholder="Select Warehouse"
+                          value={inputValue.warehouseId}
                           onChange={(e) => {
                             setInputValue({
                               ...inputValue,
@@ -188,7 +202,7 @@ export default function ProductCreateScreen() {
                       <NativeSelect.Root>
                         <NativeSelect.Field
                           outline={"none"}
-                          placeholder="Select Category"
+                          value={inputValue.categoryId}
                           onChange={(e) => {
                             setInputValue({
                               ...inputValue,
@@ -296,8 +310,8 @@ export default function ProductCreateScreen() {
                   >
                     <Button variant={"surface"}>Cancel</Button>
                   </ChakraRouterLink>
-                  <Button variant={"outline"} onClick={handleAdd}>
-                    Add
+                  <Button variant={"outline"} onClick={handleEdit}>
+                    Edit
                   </Button>
                 </SimpleGrid>
               </Grid>

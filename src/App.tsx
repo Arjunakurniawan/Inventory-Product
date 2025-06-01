@@ -1,9 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import ProductListScreen from "./screens/Product/ProductListScreen";
-import ProductCreateScreen from "./screens/Product/ProductCreateScreen";
 import CategoryListScreen from "./screens/Category/CategoryListScreen";
 import HomeScreen from "./screens/Home/HomeScreen";
 import WarehouseListScreen from "./screens/Warehouse/WarehouseListScreen";
+import ProductEditScreen from "./screens/Product/ProductEditForm";
+import ProductCreateForm from "./screens/Product/ProductCreateForm";
+import TransactionListScreen from "./screens/Transaction/TransactionListScreen";
 
 const App = () => {
   return (
@@ -11,9 +14,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/products" element={<ProductListScreen />} />
-        <Route path="/products/create" element={<ProductCreateScreen />} />
+        <Route path="/product/create" element={<ProductCreateForm />} />
+        <Route path="/product/edit/:id" element={<ProductEditScreen />} />
         <Route path="/category" element={<CategoryListScreen />} />
         <Route path="/warehouse" element={<WarehouseListScreen />} />
+        <Route path="/transactions" element={<TransactionListScreen />} />
       </Routes>
     </Router>
   );

@@ -38,3 +38,38 @@ export type ApiResponse<T> = {
   data: T;
   message: string | null;
 };
+
+// Transaction types (modeled after backend)
+export type TransactionType = "INCOMING" | "OUTCOMING";
+
+export type Transaction = {
+  id: number;
+  type: TransactionType;
+  createdAt: string;
+};
+
+export type TransactionItem = {
+  productId: number;
+  transactionId: number;
+  quantity: number;
+  price: number;
+  product: Product | null;
+};
+
+export type TransactionWithItems = {
+  id: number;
+  type: TransactionType;
+  createdAt: string;
+  items: TransactionItem[];
+};
+
+export type TransactionRequest = {
+  type: TransactionType;
+  items: [
+    {
+      productId: number;
+      quantity: number;
+      price: number;
+    }
+  ];
+};

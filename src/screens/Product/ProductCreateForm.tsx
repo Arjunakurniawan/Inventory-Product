@@ -26,7 +26,7 @@ import { FetchWarehouse } from "../../services/Warehouse";
 import { FetchCategory } from "../../services/Category";
 import Footer from "../../components/commons/footer";
 
-export default function ProductCreateScreen() {
+export default function ProductCreateForm() {
   //get data Warehouse and Category
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -97,8 +97,8 @@ export default function ProductCreateScreen() {
       );
 
       if (responseCreate) {
-        navigate("/products");
         alert("success created");
+        navigate("/products");
       }
     } catch (error) {
       console.error(error);
