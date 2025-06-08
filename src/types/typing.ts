@@ -24,7 +24,6 @@ export type ProductRequest = {
 export type Category = {
   id: number;
   name: string;
-  total: number;
 };
 
 export type Warehouse = {
@@ -36,6 +35,7 @@ export type Warehouse = {
 
 export type ApiResponse<T> = {
   data: T;
+  total: number;
   message: string | null;
 };
 

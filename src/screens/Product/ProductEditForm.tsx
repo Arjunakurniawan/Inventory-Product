@@ -105,6 +105,7 @@ export default function ProductEditForm() {
       if (responseEdit) {
         navigate("/products");
       }
+      alert("Product updated successfully");
     } catch (error) {
       console.error(error);
     }
@@ -122,7 +123,7 @@ export default function ProductEditForm() {
           maxW={{ base: "100%", lg: "165vh" }}
           maxH={"breakpoint-lg"}
           size={"lg"}
-          margin={{ base: "0", lg: "3rem auto", "2xl": "4rem" }}
+          margin={{ base: "0", lg: "3rem auto", "2xl": "4rem auto" }}
           alignItems={"center"}
           p={"2rem"}
           border={"1.5px solid"}

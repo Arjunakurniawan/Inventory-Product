@@ -28,15 +28,16 @@ export default function ProductListScreen() {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const [total, setTotal] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const getApi = async (page = 1) => {
     try {
-      const responseGet = await FetchProduct<Product[]>(
+      const responseGet = await FetchProduct(
         `/product?page=${page}&limit=${limit}`
       );
-      setProducts(responseGet || []);
-      setTotal(responseGet?.length || 0);
+
+      setProducts(responseGet?.data || []);
+      setTotalItems(responseGet?.total || 0);
     } catch (error) {
       console.error(error, "404 not found");
     }
@@ -45,6 +46,9 @@ export default function ProductListScreen() {
   useEffect(() => {
     getApi(page);
   }, [page]);
+
+  // rumus calculation pagination manual
+  //  const totalPages = Math.ceil(totalItems / limit);
 
   const handleDelete = async (id: number) => {
     try {
@@ -67,6 +71,9 @@ export default function ProductListScreen() {
 
   const MotionDiv = motion.div;
   const navigate = useNavigate();
+
+  console.log("page", page);
+  console.log("totalItems", totalItems);
 
   return (
     <>
@@ -242,12 +249,13 @@ export default function ProductListScreen() {
           </Box>
         </Flex>
         <Pagination.Root
-          count={total}
+          count={totalItems}
           pageSize={limit}
+          page={page}
           defaultPage={page}
           marginTop={"1rem"}
           marginLeft={"2rem"}
-          onChange={(page: number) => setPage(page)}
+          onPageChange={(newPage) => setPage(newPage.page)}
         >
           <ButtonGroup variant="outline" size="sm">
             <Pagination.PrevTrigger asChild>
@@ -258,7 +266,10 @@ export default function ProductListScreen() {
 
             <Pagination.Items
               render={(page) => (
-                <IconButton variant={{ base: "outline", _selected: "solid" }}>
+                <IconButton
+                  variant={{ base: "ghost", _selected: "outline" }}
+                  onClick={() => setPage(page.value)}
+                >
                   {page.value}
                 </IconButton>
               )}

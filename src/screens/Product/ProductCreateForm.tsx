@@ -118,7 +118,7 @@ export default function ProductCreateForm() {
           maxW={{ base: "100%", lg: "165vh" }}
           maxH={"breakpoint-lg"}
           size={"lg"}
-          margin={{ base: "0", lg: "3rem auto", "2xl": "4rem" }}
+          margin={{ base: "0", lg: "3rem auto", "2xl": "4rem auto" }}
           alignItems={"center"}
           p={"2rem"}
           border={"1.5px solid"}
@@ -294,6 +294,11 @@ export default function ProductCreateForm() {
                             }
                           }}
                         />
+                        {inputValue.image && (
+                          <Text mt={2} fontSize="sm" color="gray.600">
+                            File terpilih: {inputValue.image}
+                          </Text>
+                        )}
                       </Box>
                     </InputGroup>
                   </SimpleGrid>

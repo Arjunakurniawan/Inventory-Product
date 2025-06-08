@@ -1,10 +1,10 @@
-import { ApiResponse, ProductRequest } from "../types/typing";
+import { ApiResponse, Product, ProductRequest } from "../types/typing";
 import api from "./Api/api";
 
-export const FetchProduct = async <ProductRequest>(url: string) => {
+export const FetchProduct = async (url: string) => {
   try {
-    const response = await api.get<ApiResponse<ProductRequest>>(url);
-    return response.data.data;
+    const response = await api.get<ApiResponse<Product[]>>(url);
+    return response.data;
   } catch (error) {
     console.error(error, "Failed Fetch Product");
   }
